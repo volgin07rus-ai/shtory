@@ -25,7 +25,7 @@
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{background:var(--bg)}
-body{background:var(--bg);color:var(--text);font:400 15px/1.6 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body{background:var(--bg);color:var(--text);font:400 16px/1.6 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 img{display:block;max-width:100%}
 a{color:inherit;text-decoration:none}
 ul{list-style:none}
@@ -38,23 +38,27 @@ button{background:none;border:0;cursor:pointer}
 .skip:focus{top:8px}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .serif{font-family:var(--serif);font-stretch:90%}
-.eyebrow{font:500 11.5px/1.3 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--rose)}
-.h2{margin-top:14px;font:300 clamp(32px,3.15vw,54px)/1.1 var(--serif);font-stretch:90%;letter-spacing:-.005em;color:var(--ink)}
-.lead{font:400 15px/1.62 var(--sans);color:var(--text)}
-.link{display:inline-flex;align-items:center;gap:.7em;padding-bottom:5px;border-bottom:1px solid rgba(107,45,51,.35);font:600 12px/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--wine);transition:border-color .4s var(--ease)}
+.eyebrow{font:500 12.5px/1.3 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--rose)}
+.h2{margin-top:14px;font:300 clamp(34px,3.3vw,57px)/1.1 var(--serif);font-stretch:90%;letter-spacing:-.005em;color:var(--ink)}
+.lead{font:400 16px/1.62 var(--sans);color:var(--text)}
+.link{display:inline-flex;align-items:center;gap:.7em;padding-bottom:5px;border-bottom:1px solid rgba(107,45,51,.35);font:600 12.5px/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--wine);transition:border-color .4s var(--ease)}
 .link i{font-style:normal;transition:transform .5s var(--ease)}
 .hoverable .link:hover{border-color:var(--wine)}
 .hoverable .link:hover i{transform:translateX(5px)}
 .pic{position:relative;overflow:hidden;background:var(--bg-2)}
 .pic img{width:100%;height:100%;object-fit:cover}
 
-/* Кнопка с «шторой»: заливка опускается сверху */
-.btn{position:relative;overflow:hidden;display:inline-flex;align-items:center;justify-content:center;gap:.9em;padding:17px 26px;border-radius:2px;background:var(--wine);color:#F4EEE6;font:600 12px/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;--b-bg:#4A1D22}
-.btn::before{content:'';position:absolute;inset:0;background:var(--b-bg);transform:scaleY(0);transform-origin:bottom;transition:transform .6s var(--ease)}
-.btn>*{position:relative;z-index:1}
-.btn i{font-style:normal;transition:transform .5s var(--ease)}
-.hoverable .btn:hover::before,.btn:focus-visible::before{transform:scaleY(1);transform-origin:top}
-.hoverable .btn:hover i{transform:translateX(4px)}
+/* Кнопка-штора: две бархатные половинки. При наведении расходятся к краям и собираются в складки (сжатие рисунка
+   и есть складки), за ними светлое «окно». Цвет бархата в --c */
+.btn{position:relative;isolation:isolate;overflow:hidden;display:inline-flex;align-items:center;justify-content:center;padding:18px 34px;border-radius:2px;background-color:var(--c);color:#F4EEE6;transition:background-color .2s .75s,box-shadow .2s .75s;font:600 12.5px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;--c:var(--wine)}
+.btn::before,.btn::after{content:'';position:absolute;top:0;bottom:0;z-index:-1;width:calc(50% + 1px);background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(0,0,0,.16)),repeating-linear-gradient(90deg,rgba(0,0,0,0) 0,rgba(0,0,0,.11) 6px,rgba(255,255,255,.06) 10px,rgba(0,0,0,0) 13px),var(--c);transition:transform .9s cubic-bezier(.7,0,.2,1)}
+.btn::before{left:0;transform-origin:0 50%}
+.btn::after{right:0;transform-origin:100% 50%}
+.btn span{transition:color .4s var(--ease) .3s}
+/* фон в покое того же цвета, что бархат: светлое «окно» не просвечивает по краю; светлеет, только пока шторы открыты */
+.hoverable .btn:hover,.btn:focus-visible{background-color:#F5E9D9;box-shadow:inset 0 0 0 1px rgba(107,45,51,.22);transition-delay:0s}
+.hoverable .btn:hover::before,.hoverable .btn:hover::after,.btn:focus-visible::before,.btn:focus-visible::after{transform:scaleX(.12)}
+.hoverable .btn:hover span,.btn:focus-visible span{color:var(--c);transition-delay:.08s}
 
 /* ---------- Загрузчик (как в макете 3): размытое фото с логотипом, карточка «вдыхает», логотип улетает в шапку ---------- */
 .ld{position:fixed;inset:0;z-index:500;background:#1D1210}
@@ -74,47 +78,44 @@ button{background:none;border:0;cursor:pointer}
 .hoverable .sw a:not([aria-current]):hover{color:#F4EEE6}
 
 /* ---------- Шапка ---------- */
-.hd{position:fixed;inset:0 0 auto;z-index:100;height:92px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:0 var(--pad);color:var(--ink);transition:height .5s var(--ease),background-color .5s var(--ease),box-shadow .5s var(--ease)}
-.hd.is-solid{height:70px;background:rgba(239,235,228,.9);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);box-shadow:0 1px 0 var(--line)}
+.hd{position:fixed;inset:0 0 auto;z-index:100;height:84px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:0 var(--pad);color:var(--ink);background-color:rgba(239,235,228,.92);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);box-shadow:0 1px 0 var(--line);transition:height .5s var(--ease),background-color .7s var(--ease),box-shadow .7s var(--ease)}
+.hd.is-solid{height:68px}
+.is-loading .hd{background-color:rgba(239,235,228,0);box-shadow:0 1px 0 rgba(42,33,30,0)}   /* полоса проявляется, когда логотип долетел */
 .lg{display:block;fill:currentColor}
 .logo{justify-self:start;display:block;color:var(--ink);--lgt:var(--muted)}
 .logo .lg{width:clamp(132px,10.5vw,168px);height:auto}
 .nav{display:flex;gap:clamp(18px,2.6vw,46px)}
-.hv{position:relative;padding:8px 10px;margin:-8px -10px;font:600 12px/1 var(--sans);letter-spacing:.1em;text-transform:uppercase}
+.hv{position:relative;padding:8px 10px;margin:-8px -10px;font:600 12.5px/1 var(--sans);letter-spacing:.1em;text-transform:uppercase}
 .hv::before{content:'';position:absolute;inset:0;background:var(--wine);transform:scaleY(0);transform-origin:bottom;transition:transform .55s var(--ease)}
 .hv span{position:relative;z-index:1;transition:color .35s var(--ease)}
 .hoverable .hv:hover::before,.hv:focus-visible::before{transform:scaleY(1);transform-origin:top}
 .hoverable .hv:hover span,.hv:focus-visible span{color:#F4EEE6}
-.hd-btn{justify-self:end;position:relative;overflow:hidden;display:inline-flex;align-items:center;gap:.9em;padding:14px 20px;border:1px solid rgba(42,33,30,.3);border-radius:2px;background:rgba(239,235,228,.5);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);font:600 11.5px/1 var(--sans);letter-spacing:.12em;text-transform:uppercase}
-.hd-btn::before{content:'';position:absolute;inset:0;background:var(--wine);transform:scaleY(0);transform-origin:bottom;transition:transform .55s var(--ease)}
-.hd-btn>*{position:relative;z-index:1;transition:color .35s var(--ease)}
-.hd-btn i{font-style:normal}
-.hoverable .hd-btn:hover::before,.hd-btn:focus-visible::before{transform:scaleY(1);transform-origin:top}
-.hoverable .hd-btn:hover>*,.hd-btn:focus-visible>*{color:#F4EEE6}
+.hd-btn{justify-self:end;padding:15px 24px;font-size:11.5px}
 
 /* ---------- Первый экран ---------- */
-.hero{position:relative;isolation:isolate;min-height:max(680px,100svh);max-height:1000px;display:flex;flex-direction:column;justify-content:flex-end;padding:140px var(--pad) clamp(36px,5vh,60px);overflow:hidden;color:var(--ink)}
+.hero{position:relative;isolation:isolate;min-height:max(680px,100svh);max-height:1000px;display:flex;flex-direction:column;justify-content:flex-end;padding:124px var(--pad) clamp(36px,5vh,60px);overflow:hidden;color:var(--ink)}
 .hero-card{position:absolute;inset:0;z-index:-1;overflow:hidden;background:#2B201D}
 .hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 55%}
-.hero-veil{position:absolute;inset:0;background:linear-gradient(180deg,rgba(239,235,228,.82) 0,rgba(239,235,228,.5) 70px,rgba(239,235,228,0) 150px),linear-gradient(90deg,rgba(239,235,228,.97) 0%,rgba(239,235,228,.9) 26%,rgba(239,235,228,.55) 44%,rgba(239,235,228,0) 62%)}
-.hero-in{max-width:600px}
+.hero-veil{position:absolute;inset:0;background:linear-gradient(90deg,rgba(239,235,228,.97) 0%,rgba(239,235,228,.9) 26%,rgba(239,235,228,.55) 44%,rgba(239,235,228,0) 62%)}
+.hero-in{max-width:660px;margin-block:auto}   /* по центру свободного места, а не у пола */
 .hero .eyebrow{color:var(--muted);letter-spacing:.14em}
-.h1{margin-top:18px;font:300 clamp(46px,5.7vw,94px)/1.02 var(--serif);font-stretch:90%;letter-spacing:-.01em;color:var(--ink)}
+.h1{margin-top:18px;font:400 clamp(48px,6vw,100px)/1.02 var(--serif);font-stretch:90%;letter-spacing:-.01em;color:var(--ink)}
 .h1 .ln{display:block;overflow:hidden;padding-bottom:.06em}
 .h1 .ln>span{display:block}
-.hero-p{margin-top:22px;max-width:27rem;font:400 16.5px/1.6 var(--sans);color:var(--text)}
-.hero .btn{margin-top:34px}
-.stats{display:flex;margin-top:clamp(48px,8vh,96px)}
-.stat{padding:0 clamp(20px,2.4vw,40px);border-left:1px solid rgba(42,33,30,.22)}
+.hero-p{margin-top:22px;max-width:30rem;font:400 18px/1.6 var(--sans);color:var(--text)}
+.hero .btn{margin-top:36px;padding:20px 40px;font-size:13px}
+.stats{display:flex;align-items:flex-end;align-self:flex-start;margin-top:clamp(36px,5vh,64px);padding:18px clamp(22px,2vw,30px);border:1px solid rgba(42,33,30,.1);border-radius:2px;background:rgba(246,243,238,.8);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.stat{padding:2px clamp(22px,2.6vw,44px);border-left:1px solid rgba(107,45,51,.3)}
 .stat:first-child{padding-left:0;border-left:0}
-.stat-n{display:block;font:400 26px/1.1 var(--serif);font-stretch:90%;color:var(--ink);font-variant-numeric:tabular-nums}
-.stat-l{display:block;margin-top:6px;font:400 12.5px/1.35 var(--sans);color:var(--text)}
+.stat-n{display:block;font:400 clamp(36px,3.1vw,52px)/1 var(--serif);font-stretch:90%;letter-spacing:-.01em;color:var(--wine);font-variant-numeric:lining-nums tabular-nums}
+.stat-n.is-word{font-size:clamp(28px,2.3vw,40px)}
+.stat-l{display:block;margin-top:10px;font:500 14px/1.35 var(--sans);color:var(--ink)}
 /* Публикация в журнале: плашка в углу первого экрана */
-.hero-pub{position:absolute;right:var(--pad);bottom:clamp(36px,5vh,60px);overflow:hidden;display:inline-flex;align-items:center;gap:14px;padding:9px 20px 9px 9px;border:1px solid rgba(42,33,30,.12);border-radius:2px;background:rgba(246,243,238,.8);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);font:500 13px/1.35 var(--sans);color:var(--ink)}
+.hero-pub{position:absolute;right:var(--pad);bottom:clamp(36px,5vh,60px);overflow:hidden;display:inline-flex;align-items:center;gap:14px;padding:9px 20px 9px 9px;border:1px solid rgba(42,33,30,.12);border-radius:2px;background:rgba(246,243,238,.8);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);font:500 14px/1.35 var(--sans);color:var(--ink)}
 .hero-pub::before{content:'';position:absolute;inset:0;background:var(--wine);transform:scaleY(0);transform-origin:bottom;transition:transform .55s var(--ease)}
 .hero-pub>*{position:relative;z-index:1;transition:color .35s var(--ease),background-color .35s var(--ease)}
 .hero-pub b{flex:none;display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:var(--wine);color:#F4EEE6;font:400 15px/1 var(--serif);letter-spacing:.02em}
-.hero-pub small{display:block;font:500 10.5px/1.3 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);transition:color .35s var(--ease)}
+.hero-pub small{display:block;font:500 11px/1.3 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);transition:color .35s var(--ease)}
 .hoverable .hero-pub:hover::before,.hero-pub:focus-visible::before{transform:scaleY(1);transform-origin:top}
 .hoverable .hero-pub:hover span,.hoverable .hero-pub:hover small,.hero-pub:focus-visible span,.hero-pub:focus-visible small{color:#F4EEE6}
 .hoverable .hero-pub:hover b,.hero-pub:focus-visible b{background:#F4EEE6;color:var(--wine)}
@@ -123,24 +124,24 @@ button{background:none;border:0;cursor:pointer}
 .about{display:grid;grid-template-columns:36% minmax(0,1fr) 21%;min-height:clamp(480px,38vw,600px)}
 .about .pic img{position:absolute;inset:0}   /* фото не растягивают блок своей пропорцией */
 .about-txt{display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:clamp(44px,4vw,64px) clamp(28px,3.4vw,56px)}
-.about .eyebrow{font-size:12.5px}
+.about .eyebrow{font-size:13px}
 .about .h2{font-size:clamp(38px,3.6vw,60px)}
-.about-txt .lead{max-width:34rem;margin-top:24px;font-size:17px}
+.about-txt .lead{max-width:34rem;margin-top:24px;font-size:18px}
 .about-txt .lead+.lead{margin-top:16px}
-.about-txt .link{margin-top:clamp(28px,3vw,44px);font-size:12.5px}
+.about-txt .link{margin-top:clamp(28px,3vw,44px);font-size:13px}
 .about-col{display:grid;grid-template-rows:repeat(3,1fr);gap:10px;padding:clamp(18px,1.4vw,24px) clamp(20px,2.4vw,40px) clamp(18px,1.4vw,24px) 0}
 .about-col .pic{border-radius:4px}
 
 /* ---------- Направления ---------- */
 .dirs{padding:clamp(64px,6vw,96px) var(--pad) clamp(72px,7vw,110px)}
 .dirs-head{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr) auto;gap:clamp(24px,4vw,64px);align-items:end}
-.dirs-head .lead{max-width:24rem;font-size:14px;color:var(--muted)}
+.dirs-head .lead{max-width:24rem;font-size:15px;color:var(--muted)}
 .dirs-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:clamp(10px,1vw,16px);margin-top:clamp(32px,3vw,48px)}
 .dir .pic{aspect-ratio:1.04;border-radius:4px}
 .dir .pic img{transition:transform 1.2s var(--ease)}
 .hoverable .dir:hover .pic img{transform:scale(1.05)}
-.dir h3{margin-top:22px;font:500 16px/1.3 var(--sans);color:var(--ink)}
-.dir p{margin-top:12px;max-width:17rem;font:400 13.5px/1.5 var(--sans);color:var(--muted)}
+.dir h3{margin-top:22px;font:500 17.5px/1.3 var(--sans);color:var(--ink)}
+.dir p{margin-top:12px;max-width:18rem;font:400 14.5px/1.5 var(--sans);color:var(--muted)}
 .dir .arr{display:inline-block;margin-top:16px;color:var(--wine);transition:transform .5s var(--ease)}
 .hoverable .dir:hover .arr{transform:translateX(6px)}
 
@@ -156,25 +157,26 @@ button{background:none;border:0;cursor:pointer}
 .pt-s img{width:100%;height:100%;object-fit:cover;object-position:50% 45%}
 .pt::after{content:'';position:absolute;inset:auto 0 0;height:45%;background:linear-gradient(to top,rgba(20,12,10,.62),rgba(20,12,10,0));pointer-events:none}
 .pt-cap,.pt-ctl{position:absolute;z-index:2;bottom:clamp(18px,2vw,30px)}
-.pt-cap{left:clamp(18px,2.2vw,34px)}
-.pt-cap b{display:block;font:500 16px/1.3 var(--sans)}
-.pt-cap span{display:block;margin-top:4px;font:400 13.5px/1.3 var(--sans);opacity:.82}
-.pt-pub{display:inline-block;margin-top:10px;font:500 12px/1.3 var(--sans);letter-spacing:.04em;color:#F4EEE6;text-decoration:underline;text-decoration-color:rgba(244,238,230,.5);text-underline-offset:.25em}
+.pt-cap{left:clamp(18px,2.2vw,34px);right:calc(2 * clamp(18px,2.2vw,34px) + 84px)}   /* не заезжает под стрелки */
+.pt-cap b{display:block;font:500 17px/1.3 var(--sans)}
+.pt-cap span{display:block;margin-top:4px;font:400 14.5px/1.3 var(--sans);opacity:.82}
+.pt-pub{display:inline-block;margin-top:10px;font:500 12.5px/1.3 var(--sans);letter-spacing:.04em;color:#F4EEE6;text-decoration:underline;text-decoration-color:rgba(244,238,230,.5);text-underline-offset:.25em}
 .pt-ctl{right:clamp(18px,2.2vw,34px);display:flex;flex-direction:column;align-items:flex-end;gap:10px}
 .pt-btns{display:flex;gap:8px}
-.pt-btns button{width:34px;height:34px;border:1px solid rgba(244,238,230,.6);border-radius:50%;display:grid;place-items:center;font:400 14px/1 var(--sans);transition:background-color .35s var(--ease),color .35s var(--ease)}
+.pt-btns svg{display:block;width:16px;height:16px}
+.pt-btns button{width:38px;height:38px;padding:0;border:1px solid rgba(244,238,230,.6);border-radius:50%;display:grid;place-items:center;transition:background-color .35s var(--ease),color .35s var(--ease)}
 .hoverable .pt-btns button:hover{background:#F4EEE6;color:var(--ink)}
-.pt-idx{font:400 13px/1 var(--sans);letter-spacing:.06em;font-variant-numeric:tabular-nums}
+.pt-idx{font:400 13.5px/1 var(--sans);letter-spacing:.06em;font-variant-numeric:tabular-nums}
 
 /* ---------- Как мы работаем ---------- */
 .steps{position:relative;padding:clamp(64px,6vw,96px) calc(var(--pad) + 13vw) clamp(64px,6vw,96px) var(--pad);overflow:hidden}
 .steps-head{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:clamp(24px,4vw,64px);align-items:start}
-.steps-head .lead{margin-top:36px;max-width:22rem;font-size:14px;color:var(--muted)}
+.steps-head .lead{margin-top:36px;max-width:23rem;font-size:15px;color:var(--muted)}
 .steps-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(20px,3vw,52px);margin-top:clamp(36px,3.4vw,56px)}
 .st-n{display:block;overflow:hidden;font:300 clamp(42px,3.6vw,60px)/1 var(--serif);font-stretch:90%;color:var(--wine-2)}
 .st-n span{display:block}
-.st h3{margin-top:18px;font:400 clamp(19px,1.5vw,23px)/1.22 var(--serif);font-stretch:90%;color:var(--ink)}
-.st p{margin-top:14px;max-width:16rem;font:400 13.5px/1.55 var(--sans);color:var(--muted)}
+.st h3{margin-top:18px;font:400 clamp(20px,1.6vw,25px)/1.22 var(--serif);font-stretch:90%;color:var(--ink)}
+.st p{margin-top:14px;max-width:17rem;font:400 14.5px/1.55 var(--sans);color:var(--muted)}
 .steps-decor{position:absolute;top:0;right:0;bottom:0;width:13vw;max-width:220px}
 .steps-decor img{width:100%;height:100%;object-fit:cover;object-position:70% 30%}
 .steps-decor::before{content:'';position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,var(--bg),rgba(239,235,228,0) 40%)}
@@ -183,23 +185,23 @@ button{background:none;border:0;cursor:pointer}
 .ds{display:grid;grid-template-columns:minmax(0,1fr) 28% 21.5%;background:var(--plum);color:#F1E7DD;min-height:clamp(380px,28vw,520px)}
 .ds-txt{padding:clamp(48px,4.4vw,72px) clamp(28px,3vw,52px) clamp(48px,4.4vw,72px) var(--pad)}
 .ds .eyebrow{color:rgba(241,231,221,.6)}
-.ds .h2{color:#F4EEE6;font-size:clamp(30px,2.75vw,48px)}
+.ds .h2{color:#F4EEE6;font-size:clamp(32px,2.9vw,50px)}
 .ds .lead{margin-top:20px;max-width:32rem;color:rgba(241,231,221,.82)}
-.ds .btn{margin-top:clamp(28px,3vw,44px);background:var(--wine-2);--b-bg:#9A525B}
+.ds .btn{margin-top:clamp(28px,3vw,44px);--c:var(--wine-2)}
 .ds-list{position:relative;display:flex;flex-direction:column;justify-content:center;padding:40px var(--pad) 40px clamp(36px,3.4vw,60px);background:var(--plum-2)}
 .ds-list ul{display:flex;flex-direction:column;gap:clamp(22px,2.2vw,34px)}
 .ds-line{position:absolute;left:clamp(20px,2vw,34px);top:15%;bottom:15%;width:1px;background:rgba(241,231,221,.25);transform-origin:top}
-.ds-list li{position:relative;font:500 11.5px/1.6 var(--sans);letter-spacing:.1em;text-transform:uppercase;color:rgba(241,231,221,.86)}
+.ds-list li{position:relative;font:500 12.5px/1.6 var(--sans);letter-spacing:.1em;text-transform:uppercase;color:rgba(241,231,221,.86)}
 .ds-list li::before{content:'';position:absolute;left:calc(-1 * clamp(36px,3.4vw,60px) + clamp(20px,2vw,34px) - 2.5px);top:.55em;width:6px;height:6px;border-radius:50%;background:#C9A27E}
 
 /* ---------- Форма ---------- */
 .rq{display:grid;grid-template-columns:31% minmax(0,1fr) 22%;min-height:clamp(520px,40vw,660px)}
 .rq-panel{padding:clamp(40px,3.6vw,60px) clamp(28px,3.4vw,58px)}
-.rq .h2{font-size:clamp(26px,2.25vw,40px)}
+.rq .h2{font-size:clamp(28px,2.4vw,42px)}
 .rq .lead{margin-top:14px;max-width:28rem}
 .seg{display:inline-grid;grid-template-columns:1fr 1fr;margin-top:24px;border:1px solid rgba(107,45,51,.35);border-radius:2px;overflow:hidden}
 .seg input{position:absolute;opacity:0;pointer-events:none}
-.seg label{position:relative;padding:11px 26px;font:400 13px/1 var(--sans);color:var(--text);text-align:center;cursor:pointer;transition:color .4s var(--ease)}
+.seg label{position:relative;padding:12px 26px;font:400 14px/1 var(--sans);color:var(--text);text-align:center;cursor:pointer;transition:color .4s var(--ease)}
 .seg label::before{content:'';position:absolute;inset:0;z-index:-1;background:var(--wine);transform:scaleY(0);transform-origin:bottom;transition:transform .55s var(--ease)}
 .seg label{z-index:0;isolation:isolate}
 .seg input:checked+label{color:#F4EEE6}
@@ -208,15 +210,15 @@ button{background:none;border:0;cursor:pointer}
 .f2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
 .fld{display:block}
 .fld+.fld{margin-top:0}
-.fld input,.fld textarea{display:block;width:100%;padding:14px 16px;border:1px solid #D8CFC4;border-radius:2px;background:var(--field);font:400 14px/1.4 var(--sans);color:var(--ink);outline:none;transition:border-color .3s var(--ease),box-shadow .3s var(--ease)}
+.fld input,.fld textarea{display:block;width:100%;padding:14px 16px;border:1px solid #D8CFC4;border-radius:2px;background:var(--field);font:400 15px/1.4 var(--sans);color:var(--ink);outline:none;transition:border-color .3s var(--ease),box-shadow .3s var(--ease)}
 .fld textarea{resize:vertical;min-height:58px}
 .fld input::placeholder,.fld textarea::placeholder{color:#93867F}
 .fld input:focus,.fld textarea:focus{border-color:var(--wine);box-shadow:0 0 0 3px rgba(107,45,51,.12)}
 .fld input[aria-invalid="true"]{border-color:#A3343F}
 .fld-c{margin-top:12px}
-.err{display:block;margin-top:6px;font:400 12.5px/1.3 var(--sans);color:#A3343F}
+.err{display:block;margin-top:6px;font:400 13px/1.3 var(--sans);color:#A3343F}
 .rq .btn{width:100%;margin-top:14px;padding:18px 26px}
-.agree{display:flex;gap:10px;align-items:flex-start;margin-top:16px;font:400 13px/1.45 var(--sans);color:var(--text);cursor:pointer}
+.agree{display:flex;gap:10px;align-items:flex-start;margin-top:16px;font:400 14px/1.45 var(--sans);color:var(--text);cursor:pointer}
 .agree input{appearance:none;-webkit-appearance:none;flex:none;width:16px;height:16px;margin-top:1px;border:1px solid #A89A92;border-radius:2px;background:var(--field);display:grid;place-items:center;cursor:pointer}
 .agree input:checked{background:var(--wine);border-color:var(--wine)}
 .agree input:checked::after{content:'';width:8px;height:4px;border:solid #F4EEE6;border-width:0 0 1.5px 1.5px;transform:translateY(-1px) rotate(-45deg)}
@@ -225,19 +227,19 @@ button{background:none;border:0;cursor:pointer}
 .rq-ok{padding-top:28px;outline:none}
 .rq-ok h3{font:300 clamp(26px,2.2vw,36px)/1.1 var(--serif);font-stretch:90%;color:var(--ink)}
 .rq-ok p{margin-top:12px;max-width:26rem}
-.rq-ok small{display:block;margin-top:8px;font-size:12.5px;color:var(--muted)}
+.rq-ok small{display:block;margin-top:8px;font-size:13px;color:var(--muted)}
 .rq-ok .link{margin-top:22px}
 .rq-quote{position:relative;color:#F4EEE6}
 .rq-quote::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(26,8,10,.72),rgba(26,8,10,.2) 60%,rgba(26,8,10,.05))}
 .rq-quote blockquote{position:absolute;z-index:1;left:clamp(20px,2.4vw,40px);right:clamp(16px,2vw,32px);bottom:clamp(36px,4vw,64px);padding:18px 0;border-top:1px solid rgba(244,238,230,.4);border-bottom:1px solid rgba(244,238,230,.4);font:300 clamp(28px,2.6vw,44px)/1.15 var(--serif);font-stretch:90%}
 
 /* ---------- Футер ---------- */
-.ft{display:flex;align-items:center;gap:clamp(20px,3vw,52px);padding:34px var(--pad);background:var(--brown);color:rgba(241,231,221,.86);font:400 13.5px/1.4 var(--sans)}
+.ft{display:flex;align-items:center;gap:clamp(20px,3vw,52px);padding:34px var(--pad);background:var(--brown);color:rgba(241,231,221,.86);font:400 14.5px/1.4 var(--sans)}
 .ft .logo{color:#F1E7DD;--lgt:rgba(241,231,221,.55)}
 .ft .logo .lg{width:150px}
 .ft-row{display:flex;flex-wrap:wrap;gap:12px clamp(18px,2.6vw,44px)}
 .ft-row+.ft-row{padding-left:clamp(20px,3vw,52px);border-left:1px solid rgba(241,231,221,.16)}
-.ft-meta{margin-left:auto;padding-left:clamp(20px,2.4vw,40px);border-left:1px solid rgba(241,231,221,.16);display:flex;flex-direction:column;gap:4px;font-size:12.5px;color:rgba(241,231,221,.45)}
+.ft-meta{margin-left:auto;padding-left:clamp(20px,2.4vw,40px);border-left:1px solid rgba(241,231,221,.16);display:flex;flex-direction:column;gap:4px;font-size:13px;color:rgba(241,231,221,.45)}
 .hoverable .ft a:hover{color:#F4EEE6;text-decoration:underline;text-underline-offset:.2em}
 
 /* ---------- Появления (только при JS) ---------- */
@@ -268,9 +270,12 @@ button{background:none;border:0;cursor:pointer}
   .logo .lg{width:120px}
   .hd-btn{padding:11px 14px;font-size:10.5px;letter-spacing:.1em}
   .hero{padding-top:120px}
-  .hero-veil{background:linear-gradient(180deg,rgba(239,235,228,.55) 0%,rgba(239,235,228,.88) 45%,rgba(239,235,228,.96) 100%)}
-  .stats{flex-wrap:wrap;row-gap:18px}
-  .stat:last-child{padding-left:0;border-left:0;flex-basis:100%}
+  .hero-veil{background:linear-gradient(180deg,rgba(239,235,228,.1) 0,rgba(239,235,228,.86) 120px,rgba(239,235,228,.93) 340px,rgba(239,235,228,.97) 100%)}
+  .stats{display:grid;grid-template-columns:auto minmax(0,1fr);row-gap:16px;align-self:stretch;padding:18px 20px}
+  .stat{padding:0 0 0 20px}
+  .stat:first-child{padding:0 20px 0 0}
+  .stat:last-child{grid-column:1/-1;padding:16px 0 0;border-left:0;border-top:1px solid rgba(107,45,51,.2)}
+  .stat-l{font-size:13.5px}
   .about{grid-template-columns:1fr}
   .about-big{aspect-ratio:1.2}
   .about-col{height:auto;grid-template-columns:repeat(3,1fr);aspect-ratio:3/1.15}
@@ -330,7 +335,7 @@ button{background:none;border:0;cursor:pointer}
     <a class="hv" href="#designers"><span>Дизайнерам</span></a>
     <a class="hv" href="#contacts"><span>Контакты</span></a>
   </nav>
-  <a class="hd-btn" href="#request"><span>Обсудить проект</span><i aria-hidden="true">→</i></a>
+  <a class="btn hd-btn" href="#request"><span>Обсудить проект</span></a>
 </header>
 
 <main id="main">
@@ -352,12 +357,12 @@ button{background:none;border:0;cursor:pointer}
       <p class="eyebrow">Москва&nbsp;&nbsp;/&nbsp;&nbsp;Интерьерный текстиль</p>
       <h1 class="h1" id="h1"><span class="ln"><span>У текстиля</span></span><span class="ln"><span>свой характер</span></span></h1>
       <p class="hero-p">Мы создаём текстиль и мягкую мебель, которые формируют атмосферу и делают интерьер по-настоящему вашим</p>
-      <a class="btn" href="#request"><span>Обсудить проект</span><i aria-hidden="true">→</i></a>
+      <a class="btn" href="#request"><span>Обсудить проект</span></a>
     </div>
     <div class="stats">
       <div class="stat"><span class="stat-n" data-to="5">5+</span><span class="stat-l">лет опыта</span></div>
       <div class="stat"><span class="stat-n" data-to="60">60+</span><span class="stat-l">реализованных объектов</span></div>
-      <div class="stat"><span class="stat-n">Индивидуальные</span><span class="stat-l">решения под ваш интерьер</span></div>
+      <div class="stat"><span class="stat-n is-word">Индивидуальные</span><span class="stat-l">решения под ваш интерьер</span></div>
     </div>
     <a class="hero-pub" href="https://mcmaison.ru/interior-flats/antikvariat-i-yarkie-akcenty-kvartira-120-m-v-moskve/" target="_blank" rel="noopener"><b aria-hidden="true">MC</b><span><small>О нас пишут</small>Наш проект в журнале<br>Marie Claire Maison ↗</span></a>
     <!-- Выпуск на НТВ («Школа ремонта»): добавить второй плашкой, когда выйдет -->
@@ -414,7 +419,7 @@ button{background:none;border:0;cursor:pointer}
       <p class="eyebrow" data-r>Для дизайнеров и архитекторов</p>
       <h2 class="h2" id="dsT" data-r>Ваш замысел<br>Наша текстильная экспертиза</h2>
       <p class="lead" data-r>Мы говорим с дизайнерами на языке фактур, пропорций и деталей. Вникаем в концепцию, продумываем решения и помогаем сохранить авторский замысел в реализации</p>
-      <a class="btn" href="#request" id="dsGo" data-r><span>Обсудить сотрудничество</span><i aria-hidden="true">→</i></a>
+      <a class="btn" href="#request" id="dsGo" data-r><span>Обсудить сотрудничество</span></a>
     </div>
     <div class="pic ds-pic" data-clip><img src="https://images.unsplash.com/photo-1770970831074-6e88b6cc260b?auto=format&amp;fit=crop&amp;w=900&amp;q=75" alt="Образцы тканей и эскизы на столе дизайнера" loading="lazy"></div>
     <div class="ds-list">
@@ -446,7 +451,7 @@ button{background:none;border:0;cursor:pointer}
           <label class="fld"><span class="sr">Телефон или Telegram</span><input name="contact" placeholder="Телефон или Telegram" autocomplete="tel" aria-describedby="err-contact"><span class="err" id="err-contact" hidden></span></label>
         </div>
         <label class="fld fld-c"><span class="sr">Комментарий к проекту</span><textarea name="msg" rows="2" placeholder="Комментарий к проекту (необязательно)"></textarea></label>
-        <button class="btn" type="submit"><span>Отправить заявку</span><i aria-hidden="true">→</i></button>
+        <button class="btn" type="submit"><span>Отправить заявку</span></button>
         <label class="agree"><input type="checkbox" name="agree" aria-describedby="err-agree"><span>Я согласен(а) на обработку персональных <a href="#contacts">данных</a></span></label>
         <span class="err" id="err-agree" hidden></span>
       </form>
@@ -464,7 +469,7 @@ button{background:none;border:0;cursor:pointer}
 <footer class="ft" id="contacts">
   <a class="logo" href="#top" aria-label="Шторме, наверх"><svg class="lg" viewBox="150 186 1646 452" aria-hidden="true"><use href="#lgAll"/></svg></a>
   <div class="ft-row"><span>Москва</span><a href="tel:+79991234567">+7 (999) 123-45-67</a><a href="mailto:hello@shtorme.ru">hello@shtorme.ru</a></div>
-  <div class="ft-row"><a href="#contacts">Telegram</a><a href="#contacts">WhatsApp</a><a href="#contacts">Instagram</a></div>
+  <div class="ft-row"><a href="#contacts">Telegram</a><a href="#contacts">WhatsApp</a><a href="https://www.instagram.com/shtor.me/" target="_blank" rel="noopener">Instagram</a></div>
   <div class="ft-meta"><a href="#contacts">Политика конфиденциальности</a><a href="#contacts">Разработка сайта</a></div>
 </footer>
 
@@ -479,6 +484,7 @@ button{background:none;border:0;cursor:pointer}
   const root = document.documentElement;
   const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
   const pad = n => String(n).padStart(2, '0');
+  const ARR = d => `<svg viewBox="0 0 16 16" aria-hidden="true"><path d="${d < 0 ? 'M13.5 8h-11M6.5 4l-4 4 4 4' : 'M2.5 8h11M9.5 4l4 4-4 4'}" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>`;
 
   // ---------- Данные: работы клиентки; для мебели пока стоковое фото ----------
   const DIRS = [
@@ -509,8 +515,8 @@ button{background:none;border:0;cursor:pointer}
   const tile = (p, i) => `
     <article class="pt${i % 3 ? '' : ' pt-a'}" data-p="${i}">
       ${p.imgs.map((id, k) => `<div class="pt-s"${k ? ' hidden' : ''}><img src="${U(id, 1800)}" alt="${p.t}, фото ${k + 1}" loading="lazy"></div>`).join('')}
-      <div class="pt-cap"><b>${p.t}</b><span>${p.r}</span>${p.pub ? `<a class="pt-pub" href="${p.pub[1]}" target="_blank" rel="noopener">Публикация в ${p.pub[0]} ↗</a>` : ''}</div>
-      <div class="pt-ctl"><div class="pt-btns"><button type="button" data-d="-1" aria-label="Предыдущее фото проекта «${p.t}»">←</button><button type="button" data-d="1" aria-label="Следующее фото проекта «${p.t}»">→</button></div><span class="pt-idx">01 / ${pad(p.imgs.length)}</span></div>
+      <div class="pt-cap"><b>${p.t}</b><span>${p.r}</span>${p.pub ? `<a class="pt-pub" href="${p.pub[1]}" target="_blank" rel="noopener">Публикация в ${p.pub[0]}&nbsp;↗</a>` : ''}</div>
+      <div class="pt-ctl"><div class="pt-btns"><button type="button" data-d="-1" aria-label="Предыдущее фото проекта «${p.t}»">${ARR(-1)}</button><button type="button" data-d="1" aria-label="Следующее фото проекта «${p.t}»">${ARR(1)}</button></div><span class="pt-idx">01 / ${pad(p.imgs.length)}</span></div>
     </article>`;
   $('#projects').innerHTML = [0, 3].map((k, r) => `<div class="proj-row${r ? ' rev' : ''}">${PROJECTS.slice(k, k + 3).map((p, j) => tile(p, k + j)).join('')}</div>`).join('');
 
@@ -619,7 +625,7 @@ button{background:none;border:0;cursor:pointer}
       .to(card, { scale: 1, borderRadius: 0, duration: 1.35, ease: 'expo.inOut' }, 1.35)
       .fromTo('.hero-img', { scale: 1.12 }, { scale: 1, duration: 3, ease: 'expo.out' }, 1.35)
       .to(ld, { autoAlpha: 0, duration: .7, ease: 'none' }, 1.45)
-      .add(() => root.classList.remove('is-loading'), 2.15)          // первый экран опускается под шапку
+      .add(() => root.classList.remove('is-loading'), 2.7)           // первый экран опускается под шапку, её полоса проявляется
       .to(blurEl, { autoAlpha: 0, duration: 1.1, ease: 'power2.out' }, 1.6)
       .to('.hero-veil', { autoAlpha: 1, duration: 1.1, ease: 'power2.out' }, 1.6)
       .to(logoEl, { ...fly, color: '#2A211E', '--lgt': '#7D706B', duration: 1.35, ease: 'expo.inOut' }, 1.35)
@@ -629,7 +635,7 @@ button{background:none;border:0;cursor:pointer}
   }
 
   function intro(tl, at) {
-    tl.fromTo(['.hd .nav', '.hd .hd-btn'], { autoAlpha: 0, y: -14 }, { autoAlpha: 1, y: 0, duration: 1, ease: 'expo.out', stagger: .08 }, at + .2)
+    tl.fromTo(['.hd .nav', '.hd .hd-btn'], { autoAlpha: 0, y: -14 }, { autoAlpha: 1, y: 0, duration: 1, ease: 'expo.out', stagger: .08 }, at + .5)
       .set('.hero-in>*', { autoAlpha: 1 }, at)
       .fromTo('.hero .eyebrow', { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: .9, ease: 'expo.out' }, at)
       .fromTo('.h1 .ln>span', { yPercent: 110 }, { yPercent: 0, duration: 1.3, ease: 'expo.out', stagger: .12 }, at + .08)
