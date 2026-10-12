@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>Шторме · текстильные решения · макет 2</title>
+<title>Шторме · интерьерный текстиль · макет 2</title>
 <meta name="description" content="Портьеры, римские шторы, жалюзи, декоративный текстиль и мягкая мебель на заказ. Москва.">
-<script>document.documentElement.classList.add('js')</script>
+<script>document.documentElement.classList.add('js', 'is-loading')</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://images.unsplash.com">
@@ -56,19 +56,16 @@ button{background:none;border:0;cursor:pointer}
 .hoverable .btn:hover::before,.btn:focus-visible::before{transform:scaleY(1);transform-origin:top}
 .hoverable .btn:hover i{transform:translateX(4px)}
 
-/* ---------- Загрузчик: шторы ---------- */
-.ld{position:fixed;inset:0;z-index:500;background:#2A0B10}
-.ld.is-live{background:transparent}
-.ld canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
-.ld-mark{position:absolute;left:50%;top:54%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:10px;color:#F1E4D6;text-align:center;pointer-events:none;text-shadow:0 2px 18px rgba(20,2,6,.55)}
-.ld-logo{font:400 clamp(30px,3.4vw,52px)/1 var(--serif);letter-spacing:.06em}
-.ld-tag{font:500 10px/1 var(--sans);letter-spacing:.32em;text-transform:uppercase;white-space:nowrap;opacity:.75}
-.ld-pct{margin-top:18px;font:400 13px/1 var(--sans);letter-spacing:.12em;font-variant-numeric:tabular-nums;opacity:.85}
-.ld-css{position:absolute;inset:0;display:none}
-.ld-css i{position:absolute;top:0;bottom:0;width:51%;background:repeating-linear-gradient(90deg,#3A0C14 0,#6A1A26 2.2%,#4A0F19 4.4%,#2A070D 6.4%);box-shadow:0 0 60px rgba(0,0,0,.5)}
-.ld-css i:first-child{left:0}
-.ld-css i:last-child{right:0}
-.ld.is-css .ld-css{display:block}
+/* ---------- Загрузчик (как в макете 3): размытое фото с логотипом, карточка «вдыхает», логотип улетает в шапку ---------- */
+.ld{position:fixed;inset:0;z-index:500;background:#1D1210}
+.is-loading .hero{z-index:510}
+.is-loading .hero-card{visibility:hidden}
+.hero-blur,.hero-logo{display:none}
+.js .hero-blur{display:block;position:absolute;inset:0;z-index:2;background:rgba(29,14,12,.5);-webkit-backdrop-filter:blur(26px);backdrop-filter:blur(26px)}
+.js .hero-logo{display:block;position:absolute;left:50%;top:min(50%,50svh);z-index:3;width:clamp(250px,46vw,760px);color:#F4EEE6;--lgt:rgba(244,238,230,.82);transform:translate(-50%,-50%)}
+.hero-logo .lg{width:100%;height:auto;overflow:visible}
+.ld-pct{position:absolute;left:0;right:0;top:calc(100% + clamp(30px,5vh,56px));text-align:center;font:500 11px/1 var(--sans);letter-spacing:.3em;text-transform:uppercase;color:rgba(244,238,230,.6);font-variant-numeric:tabular-nums}
+.sprite{position:absolute;width:0;height:0;overflow:hidden}
 
 /* ---------- Переключатель макетов ---------- */
 .sw{position:fixed;left:16px;bottom:16px;z-index:400;display:flex;gap:2px;padding:3px;border-radius:999px;background:rgba(35,27,21,.72);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);font:500 12px/1 var(--sans)}
@@ -79,9 +76,9 @@ button{background:none;border:0;cursor:pointer}
 /* ---------- Шапка ---------- */
 .hd{position:fixed;inset:0 0 auto;z-index:100;height:92px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:0 var(--pad);color:var(--ink);transition:height .5s var(--ease),background-color .5s var(--ease),box-shadow .5s var(--ease)}
 .hd.is-solid{height:70px;background:rgba(239,235,228,.9);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);box-shadow:0 1px 0 var(--line)}
-.logo{justify-self:start;display:flex;flex-direction:column;align-items:center;gap:5px;line-height:1}
-.logo-w{font:400 27px/1 var(--serif);font-stretch:92%;letter-spacing:.02em;color:var(--ink)}
-.logo-t{font:500 6.5px/1 var(--sans);letter-spacing:.28em;text-transform:uppercase;color:var(--muted)}
+.lg{display:block;fill:currentColor}
+.logo{justify-self:start;display:block;color:var(--ink);--lgt:var(--muted)}
+.logo .lg{width:clamp(132px,10.5vw,168px);height:auto}
 .nav{display:flex;gap:clamp(18px,2.6vw,46px)}
 .hv{position:relative;padding:8px 10px;margin:-8px -10px;font:600 12px/1 var(--sans);letter-spacing:.1em;text-transform:uppercase}
 .hv::before{content:'';position:absolute;inset:0;background:var(--wine);transform:scaleY(0);transform-origin:bottom;transition:transform .55s var(--ease)}
@@ -97,9 +94,9 @@ button{background:none;border:0;cursor:pointer}
 
 /* ---------- Первый экран ---------- */
 .hero{position:relative;isolation:isolate;min-height:max(680px,100svh);max-height:1000px;display:flex;flex-direction:column;justify-content:flex-end;padding:140px var(--pad) clamp(36px,5vh,60px);overflow:hidden;color:var(--ink)}
-.hero-bg{position:absolute;inset:0;z-index:-2}
-.hero-bg img{width:100%;height:100%;object-fit:cover;object-position:50% 55%}
-.hero::before{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(239,235,228,.82) 0,rgba(239,235,228,.5) 70px,rgba(239,235,228,0) 150px),linear-gradient(90deg,rgba(239,235,228,.97) 0%,rgba(239,235,228,.9) 26%,rgba(239,235,228,.55) 44%,rgba(239,235,228,0) 62%)}
+.hero-card{position:absolute;inset:0;z-index:-1;overflow:hidden;background:#2B201D}
+.hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 55%}
+.hero-veil{position:absolute;inset:0;background:linear-gradient(180deg,rgba(239,235,228,.82) 0,rgba(239,235,228,.5) 70px,rgba(239,235,228,0) 150px),linear-gradient(90deg,rgba(239,235,228,.97) 0%,rgba(239,235,228,.9) 26%,rgba(239,235,228,.55) 44%,rgba(239,235,228,0) 62%)}
 .hero-in{max-width:600px}
 .hero .eyebrow{color:var(--muted);letter-spacing:.14em}
 .h1{margin-top:18px;font:300 clamp(46px,5.7vw,94px)/1.02 var(--serif);font-stretch:90%;letter-spacing:-.01em;color:var(--ink)}
@@ -112,6 +109,15 @@ button{background:none;border:0;cursor:pointer}
 .stat:first-child{padding-left:0;border-left:0}
 .stat-n{display:block;font:400 26px/1.1 var(--serif);font-stretch:90%;color:var(--ink);font-variant-numeric:tabular-nums}
 .stat-l{display:block;margin-top:6px;font:400 12.5px/1.35 var(--sans);color:var(--text)}
+/* Публикация в журнале: плашка в углу первого экрана */
+.hero-pub{position:absolute;right:var(--pad);bottom:clamp(36px,5vh,60px);overflow:hidden;display:inline-flex;align-items:center;gap:14px;padding:9px 20px 9px 9px;border:1px solid rgba(42,33,30,.12);border-radius:2px;background:rgba(246,243,238,.8);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);font:500 13px/1.35 var(--sans);color:var(--ink)}
+.hero-pub::before{content:'';position:absolute;inset:0;background:var(--wine);transform:scaleY(0);transform-origin:bottom;transition:transform .55s var(--ease)}
+.hero-pub>*{position:relative;z-index:1;transition:color .35s var(--ease),background-color .35s var(--ease)}
+.hero-pub b{flex:none;display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:var(--wine);color:#F4EEE6;font:400 15px/1 var(--serif);letter-spacing:.02em}
+.hero-pub small{display:block;font:500 10.5px/1.3 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);transition:color .35s var(--ease)}
+.hoverable .hero-pub:hover::before,.hero-pub:focus-visible::before{transform:scaleY(1);transform-origin:top}
+.hoverable .hero-pub:hover span,.hoverable .hero-pub:hover small,.hero-pub:focus-visible span,.hero-pub:focus-visible small{color:#F4EEE6}
+.hoverable .hero-pub:hover b,.hero-pub:focus-visible b{background:#F4EEE6;color:var(--wine)}
 
 /* ---------- О студии ---------- */
 .about{display:grid;grid-template-columns:36% minmax(0,1fr) 21%;min-height:clamp(480px,38vw,600px)}
@@ -227,8 +233,8 @@ button{background:none;border:0;cursor:pointer}
 
 /* ---------- Футер ---------- */
 .ft{display:flex;align-items:center;gap:clamp(20px,3vw,52px);padding:34px var(--pad);background:var(--brown);color:rgba(241,231,221,.86);font:400 13.5px/1.4 var(--sans)}
-.ft .logo-w{color:#F1E7DD}
-.ft .logo-t{color:rgba(241,231,221,.55)}
+.ft .logo{color:#F1E7DD;--lgt:rgba(241,231,221,.55)}
+.ft .logo .lg{width:150px}
 .ft-row{display:flex;flex-wrap:wrap;gap:12px clamp(18px,2.6vw,44px)}
 .ft-row+.ft-row{padding-left:clamp(20px,3vw,52px);border-left:1px solid rgba(241,231,221,.16)}
 .ft-meta{margin-left:auto;padding-left:clamp(20px,2.4vw,40px);border-left:1px solid rgba(241,231,221,.16);display:flex;flex-direction:column;gap:4px;font-size:12.5px;color:rgba(241,231,221,.45)}
@@ -237,7 +243,7 @@ button{background:none;border:0;cursor:pointer}
 /* ---------- Появления (только при JS) ---------- */
 .js [data-r]{opacity:0;transform:translateY(22px)}
 .js [data-clip]{clip-path:inset(0 0 100% 0)}
-.js .hd,.js .hero-in>*,.js .stats{opacity:0}
+.js .hd>*,.js .hero-in>*,.js .stats,.js .hero-pub,.js .hero-veil{opacity:0}
 
 /* ---------- Адаптив ---------- */
 @media (max-width:1100px){
@@ -255,13 +261,14 @@ button{background:none;border:0;cursor:pointer}
   .ds-txt{grid-column:1/-1;padding-right:var(--pad)}
   .rq{grid-template-columns:minmax(0,1fr) 32%}
   .rq-side{display:none}
+  .hero-pub{position:relative;right:auto;bottom:auto;align-self:flex-start;margin-top:30px}
 }
 @media (max-width:760px){
   .hd,.hd.is-solid{height:64px}
-  .logo-w{font-size:22px}
+  .logo .lg{width:120px}
   .hd-btn{padding:11px 14px;font-size:10.5px;letter-spacing:.1em}
   .hero{padding-top:120px}
-  .hero::before{background:linear-gradient(180deg,rgba(239,235,228,.55) 0%,rgba(239,235,228,.88) 45%,rgba(239,235,228,.96) 100%)}
+  .hero-veil{background:linear-gradient(180deg,rgba(239,235,228,.55) 0%,rgba(239,235,228,.88) 45%,rgba(239,235,228,.96) 100%)}
   .stats{flex-wrap:wrap;row-gap:18px}
   .stat:last-child{padding-left:0;border-left:0;flex-basis:100%}
   .about{grid-template-columns:1fr}
@@ -287,7 +294,7 @@ button{background:none;border:0;cursor:pointer}
   .sw{left:50%;transform:translateX(-50%)}
 }
 @media (prefers-reduced-motion:reduce){
-  .js [data-r],.js .hd,.js .hero-in>*,.js .stats{opacity:1 !important;transform:none !important}
+  .js [data-r],.js .hd>*,.js .hero-in>*,.js .stats,.js .hero-pub,.js .hero-veil{opacity:1 !important;transform:none !important}
   .js [data-clip]{clip-path:none !important}
 }
 </style>
@@ -295,17 +302,28 @@ button{background:none;border:0;cursor:pointer}
 <body id="top">
 <a class="skip" href="#main">К содержимому</a>
 
-<!-- Загрузчик: бархатные шторы раздвигаются, когда страница готова -->
-<div class="ld" id="ld" aria-hidden="true">
-  <canvas id="ldCv"></canvas>
-  <div class="ld-css"><i></i><i></i></div>
-  <div class="ld-mark" id="ldMark"><span class="ld-logo">ШТОРМÉ</span><span class="ld-tag">Текстильные решения</span><span class="ld-pct" id="ldPct">0%</span></div>
-</div>
+<!-- Логотип: буквы отдельно, чтобы загрузчик мог их анимировать; в шапке и футере он целиком через <use> -->
+<svg class="sprite" aria-hidden="true" focusable="false"><defs>
+<path id="lgL1" fill-rule="evenodd" d="M169,276L169,279L170,280L175,280L176,281L184,282L189,285L191,287L194,294L194,492L193,493L192,497L187,502L183,504L180,504L179,505L172,505L171,506L169,506L168,507L169,508L169,510L488,510L488,506L478,505L477,504L474,504L470,502L465,497L464,495L464,491L463,490L463,293L464,292L465,288L469,284L475,281L479,281L480,280L487,280L488,279L488,277L487,276L394,276L394,279L395,280L401,280L402,281L405,281L413,285L416,289L416,291L417,292L417,298L418,299L418,375L417,376L417,399L418,400L418,441L417,442L417,444L418,445L418,495L417,496L417,501L414,504L412,504L411,505L354,505L352,503L352,501L351,500L351,296L352,295L352,291L356,285L364,281L367,281L368,280L374,280L376,279L376,276L282,276L282,279L283,280L293,281L300,284L303,287L305,291L305,294L306,295L306,501L303,505L245,505L240,499L240,293L241,292L242,288L247,283L251,282L252,281L256,281L257,280L263,280L264,279L264,276Z"/>
+<path id="lgL2" fill-rule="evenodd" d="M509,274L508,275L508,312L507,313L507,337L508,338L513,338L515,334L515,332L518,327L518,325L522,317L527,310L528,307L531,304L531,303L544,291L554,286L556,286L560,284L565,284L566,283L578,283L579,282L583,282L585,284L585,492L584,493L584,495L580,500L572,504L569,504L568,505L560,505L559,506L559,510L663,510L663,506L661,505L654,505L653,504L649,504L642,501L636,495L634,491L634,484L633,483L633,284L635,282L659,282L660,283L665,283L666,284L673,285L683,290L685,292L686,292L698,304L698,305L703,311L710,325L710,327L712,330L714,337L715,338L720,338L721,337L721,275L720,274Z"/>
+<path id="lgL3" fill-rule="evenodd" d="M853,269L852,270L844,270L843,271L837,271L836,272L833,272L832,273L828,273L827,274L821,275L818,277L813,278L810,280L808,280L798,285L796,287L791,289L789,291L782,295L772,304L771,304L762,313L762,314L753,324L753,325L747,333L746,336L744,338L739,348L739,350L737,353L736,358L734,361L734,364L733,365L732,371L731,372L730,383L729,384L729,410L730,411L730,417L731,418L733,429L734,430L735,435L737,438L737,440L741,447L741,449L743,451L744,454L746,456L749,462L756,470L756,471L768,483L769,483L777,490L778,490L786,496L789,497L791,499L801,504L803,504L806,506L808,506L811,508L813,508L820,511L823,511L824,512L827,512L828,513L832,513L833,514L838,514L839,515L846,515L847,516L872,516L873,515L881,515L882,514L887,514L888,513L891,513L892,512L896,512L897,511L903,510L904,509L909,508L912,506L914,506L932,497L934,495L940,492L943,489L948,486L953,481L954,481L963,472L963,471L968,466L968,465L971,462L971,461L974,458L975,455L977,453L984,439L984,437L986,434L986,432L988,428L988,425L989,424L989,421L990,420L990,416L991,415L991,410L992,409L992,383L991,382L991,375L990,374L990,370L989,369L989,366L987,362L987,359L978,338L976,336L974,331L964,318L964,317L956,309L956,308L944,297L943,297L940,294L939,294L931,288L928,287L926,285L914,279L912,279L909,277L907,277L900,274L897,274L896,273L893,273L892,272L887,272L886,271L881,271L880,270L872,270L871,269ZM872,276L873,277L878,277L882,279L885,279L888,281L890,281L896,284L898,286L902,288L911,296L911,297L915,301L915,302L922,311L930,328L930,330L931,331L931,333L934,340L935,348L936,349L936,353L937,354L937,357L938,358L939,375L940,376L940,406L939,407L939,417L938,418L938,424L937,425L937,430L936,431L936,434L935,435L934,443L933,444L930,455L928,458L928,460L922,472L920,474L919,477L914,483L914,484L902,496L889,504L887,504L884,506L881,506L877,508L873,508L872,509L860,509L859,510L858,509L847,509L846,508L838,507L837,506L832,505L822,500L815,494L814,494L802,481L792,463L791,458L789,455L789,453L787,449L787,446L786,445L786,442L785,441L785,438L784,437L784,433L783,432L783,426L782,425L780,394L781,393L781,379L782,378L782,370L783,369L783,364L784,363L784,358L785,357L785,353L786,352L787,345L788,344L788,342L789,341L793,327L801,311L808,302L808,301L824,286L838,279L844,278L845,277L850,277L851,276Z"/>
+<path id="lgL4" fill-rule="evenodd" d="M1009,276L1009,280L1010,281L1018,281L1019,282L1022,282L1029,285L1035,292L1035,294L1036,295L1036,301L1037,302L1037,489L1036,490L1036,495L1034,499L1028,505L1021,507L1020,508L1009,509L1009,513L1010,514L1114,514L1116,512L1116,510L1115,509L1103,508L1102,507L1099,507L1096,505L1094,505L1089,501L1085,493L1085,414L1086,413L1091,413L1092,414L1107,415L1108,416L1137,416L1138,415L1146,415L1147,414L1158,413L1159,412L1166,411L1167,410L1178,407L1183,404L1185,404L1189,402L1191,400L1197,397L1205,390L1206,390L1212,384L1212,383L1217,377L1223,364L1223,361L1224,360L1224,357L1225,356L1225,348L1226,347L1226,344L1225,343L1225,335L1224,334L1224,330L1223,329L1223,326L1221,323L1221,321L1214,309L1199,295L1185,287L1183,287L1175,283L1172,283L1171,282L1169,282L1165,280L1162,280L1161,279L1151,278L1150,277L1142,277L1141,276L1126,276L1125,275L1037,275L1036,276ZM1087,281L1114,281L1115,282L1124,282L1125,283L1129,283L1130,284L1134,284L1135,285L1140,286L1154,294L1163,304L1169,315L1169,317L1171,321L1171,324L1172,325L1172,330L1173,331L1173,355L1172,356L1172,362L1171,363L1171,366L1170,367L1168,375L1166,379L1164,381L1163,384L1153,395L1152,395L1146,400L1136,405L1134,405L1130,407L1126,407L1125,408L1118,408L1117,409L1103,409L1102,408L1094,408L1093,407L1088,407L1084,404L1084,287L1085,286L1085,283Z"/>
+<path id="lgL5" fill-rule="evenodd" d="M1241,275L1241,280L1242,281L1253,282L1262,286L1266,290L1269,297L1269,488L1268,489L1268,493L1267,494L1267,496L1265,500L1261,504L1252,508L1241,509L1241,514L1312,514L1313,513L1313,510L1312,509L1300,508L1291,504L1286,498L1285,494L1284,493L1284,490L1283,489L1283,461L1282,460L1282,317L1283,316L1285,318L1286,322L1291,331L1291,333L1294,338L1294,340L1299,350L1299,352L1303,359L1303,361L1306,366L1306,368L1311,377L1311,379L1318,393L1318,395L1323,404L1323,406L1327,413L1327,415L1333,426L1333,428L1336,433L1336,435L1338,437L1338,439L1343,448L1343,450L1349,461L1349,463L1353,470L1353,472L1359,483L1359,485L1363,492L1363,494L1367,501L1367,503L1371,510L1376,510L1379,504L1379,502L1383,495L1383,493L1386,488L1386,486L1397,464L1397,462L1405,447L1405,445L1412,432L1412,430L1420,415L1420,413L1432,390L1432,388L1434,386L1434,384L1458,336L1458,334L1461,330L1468,314L1470,312L1471,313L1470,489L1469,490L1469,494L1466,500L1463,503L1458,506L1456,506L1452,508L1439,509L1439,514L1543,514L1545,512L1545,510L1544,509L1534,508L1533,507L1530,507L1526,505L1521,500L1519,496L1519,491L1518,490L1518,298L1519,297L1519,293L1521,289L1527,283L1529,283L1533,281L1544,280L1545,279L1545,276L1544,275L1471,275L1470,276L1470,278L1463,291L1463,293L1455,308L1455,310L1448,323L1448,325L1429,363L1429,365L1421,380L1421,382L1413,397L1413,399L1407,410L1407,412L1399,427L1399,429L1390,447L1388,446L1388,444L1384,437L1384,435L1378,423L1376,416L1372,409L1372,407L1369,402L1369,400L1366,395L1366,393L1363,388L1363,386L1360,381L1360,379L1357,374L1357,372L1354,367L1354,365L1351,360L1351,358L1346,349L1346,347L1343,342L1343,340L1339,333L1339,331L1331,315L1331,313L1324,299L1324,297L1321,292L1321,290L1317,283L1315,276L1314,275Z"/>
+<path id="lgL6" fill-rule="evenodd" d="M1579,275L1578,276L1578,280L1579,281L1590,282L1597,285L1603,291L1604,297L1605,298L1605,492L1604,493L1604,496L1602,500L1598,504L1594,506L1589,507L1588,508L1578,509L1577,510L1577,513L1578,514L1781,514L1783,512L1784,496L1785,495L1785,486L1786,485L1786,476L1787,475L1787,467L1788,466L1788,458L1789,457L1789,455L1784,455L1783,456L1780,464L1778,466L1777,469L1775,471L1771,478L1767,482L1767,483L1756,493L1744,500L1742,500L1741,501L1739,501L1732,504L1728,504L1727,505L1720,505L1719,506L1676,506L1675,507L1656,506L1653,502L1653,391L1654,390L1700,390L1701,391L1706,391L1707,392L1713,393L1720,397L1725,402L1730,411L1733,423L1738,423L1738,352L1737,351L1736,352L1733,352L1730,363L1727,368L1719,376L1713,379L1711,379L1707,381L1703,381L1702,382L1693,382L1692,383L1655,383L1653,381L1653,284L1655,282L1657,282L1658,281L1677,281L1678,282L1709,282L1710,283L1717,283L1718,284L1727,285L1728,286L1736,288L1746,293L1756,303L1756,304L1761,310L1766,320L1766,322L1768,325L1768,327L1770,331L1771,337L1772,338L1776,338L1777,337L1777,318L1776,317L1776,285L1775,284L1775,275L1774,274L1611,274L1610,275ZM1743,193L1697,193L1695,194L1695,195L1689,203L1688,206L1682,214L1681,217L1679,219L1679,220L1669,234L1668,237L1655,256L1657,257L1662,254L1666,250L1670,248L1673,245L1681,240L1689,233L1693,231L1716,213L1720,211L1739,196L1743,194Z"/>
+<path id="lgSub" fill-rule="evenodd" d="M1529,585L1529,631L1552,631L1553,630L1559,629L1564,624L1566,620L1566,612L1563,606L1556,602L1544,602L1543,601L1538,601L1537,602L1535,600L1535,585ZM1535,607L1536,606L1552,606L1553,607L1555,607L1560,613L1560,619L1559,621L1553,626L1536,626L1535,625ZM1472,585L1472,603L1471,604L1471,613L1470,614L1470,617L1469,618L1468,622L1464,626L1460,626L1459,627L1459,630L1460,631L1467,631L1473,626L1473,624L1475,621L1475,617L1476,616L1476,609L1477,608L1477,591L1479,589L1480,590L1497,590L1498,591L1498,630L1499,631L1504,631L1504,585ZM1396,585L1396,631L1402,631L1405,626L1410,621L1413,616L1418,611L1418,610L1430,596L1431,597L1431,631L1437,631L1437,585L1431,585L1421,597L1421,598L1411,609L1408,614L1403,619L1402,618L1402,585ZM1337,585L1337,589L1338,590L1339,589L1343,589L1344,590L1346,589L1347,590L1352,590L1353,591L1353,631L1359,631L1359,591L1363,589L1375,589L1375,587L1376,586L1375,585ZM1286,589L1279,596L1278,600L1277,601L1276,611L1277,612L1277,616L1279,620L1287,628L1291,630L1294,630L1295,631L1309,631L1310,630L1315,629L1317,627L1318,627L1320,625L1320,624L1317,621L1313,624L1309,625L1308,626L1296,626L1290,623L1284,616L1284,614L1283,613L1283,602L1285,598L1291,592L1295,590L1298,590L1299,589L1305,589L1306,590L1312,591L1316,594L1317,594L1320,591L1315,587L1313,587L1309,585L1295,585L1294,586L1289,587L1287,589ZM1221,585L1220,586L1220,630L1221,631L1226,631L1226,611L1227,610L1234,610L1253,631L1260,631L1260,630L1255,625L1255,624L1241,610L1241,609L1239,607L1239,606L1255,590L1255,589L1259,585L1252,585L1233,605L1228,605L1226,603L1226,585ZM1164,585L1164,631L1197,631L1198,630L1198,627L1197,626L1171,626L1170,625L1170,611L1172,609L1194,609L1194,605L1172,605L1170,603L1170,591L1172,589L1197,589L1197,585ZM1106,585L1105,586L1105,589L1114,589L1115,590L1121,590L1122,591L1121,592L1122,593L1122,599L1121,600L1121,630L1122,631L1127,631L1127,591L1129,589L1142,589L1143,590L1144,589L1144,586L1143,585ZM1015,585L1015,629L1014,630L1015,631L1021,631L1026,625L1026,624L1030,620L1030,619L1044,603L1044,602L1050,596L1051,597L1051,631L1056,631L1057,630L1057,586L1056,585L1051,585L1038,600L1038,601L1032,607L1032,608L1028,612L1028,613L1022,619L1021,618L1021,585ZM982,585L981,586L981,630L982,631L987,631L987,585ZM933,585L933,631L956,631L957,630L960,630L965,627L967,625L969,621L969,617L970,616L968,608L964,604L960,603L959,602L955,602L954,601L940,601L939,600L939,585ZM939,607L940,606L956,606L957,607L959,607L962,610L964,614L964,617L963,618L962,622L960,624L956,626L940,626L939,625ZM865,585L865,631L871,631L871,611L872,610L900,610L901,611L901,619L900,620L900,623L901,624L901,631L906,631L907,630L906,629L906,626L907,625L907,614L906,613L906,606L907,605L907,598L906,597L906,593L907,592L907,586L906,585L901,585L901,603L899,605L872,605L871,604L871,585ZM837,588L830,585L805,585L805,631L810,631L811,630L811,617L813,615L831,615L832,614L836,613L841,608L842,606L842,603L843,602L843,599L842,598L842,595L840,591ZM811,591L813,589L825,589L826,590L829,590L833,592L836,596L836,604L835,606L832,609L828,610L827,611L812,611L811,610ZM748,585L748,630L749,631L781,631L782,630L782,627L781,626L755,626L754,625L754,611L756,609L757,610L760,610L761,609L777,609L777,605L756,605L754,603L754,591L756,589L781,589L781,585ZM690,585L690,631L713,631L720,628L725,623L725,621L726,620L726,612L723,606L715,602L698,602L696,600L696,585ZM696,607L697,606L712,606L713,607L717,608L720,612L720,619L719,621L713,626L697,626L696,625ZM663,588L659,586L656,586L655,585L631,585L631,590L630,591L630,593L631,594L631,601L630,602L630,617L631,618L630,625L631,626L631,629L630,630L631,631L636,631L637,630L637,617L639,615L657,615L658,614L662,613L667,608L668,604L669,603L669,598L668,597L668,594L667,592ZM637,591L639,589L640,590L642,590L643,589L651,589L652,590L655,590L659,592L662,596L662,604L661,606L658,609L656,610L653,610L652,611L638,611L637,610ZM575,585L575,631L608,631L608,627L607,626L582,626L581,625L581,611L582,610L585,610L586,609L604,609L604,605L582,605L581,604L581,590L582,589L583,590L587,590L588,589L608,589L608,585ZM517,585L516,586L516,589L517,590L524,590L525,589L526,590L529,590L530,589L532,591L532,631L538,631L538,591L540,589L554,589L554,585ZM453,585L453,631L459,631L459,611L460,610L488,610L489,611L489,631L495,631L495,585L489,585L489,604L488,605L460,605L459,604L459,585ZM386,585L386,587L385,588L385,594L386,595L386,597L385,598L385,608L386,609L385,611L385,630L386,631L391,631L395,627L398,622L403,617L403,616L407,612L407,611L411,607L411,606L420,596L421,597L421,630L422,631L427,631L427,585L421,585L416,591L416,592L405,604L405,605L393,619L391,618L392,617L392,586L391,585ZM1025,571L1026,575L1029,578L1031,578L1032,579L1040,579L1041,578L1043,578L1047,573L1047,571L1043,571L1043,572L1040,575L1038,576L1034,576L1032,575L1029,572L1029,571Z"/>
+<path id="lgLnL" fill-rule="evenodd" d="M156,607L156,610L157,611L339,611L340,610L340,607L337,607L336,606L329,606L328,607L308,607L307,606L306,607L302,607L301,606L296,606L295,607L294,606L291,606L290,607L288,607L287,606L282,606L281,607L271,607L270,606L183,606L182,607Z"/>
+<path id="lgLnR" fill-rule="evenodd" d="M1607,608L1607,610L1608,611L1622,611L1623,610L1625,610L1626,611L1789,611L1789,607L1786,607L1785,606L1775,606L1774,607L1769,607L1768,606L1616,606L1615,607L1608,607Z"/>
+<g id="lgAll"><use href="#lgL1"/><use href="#lgL2"/><use href="#lgL3"/><use href="#lgL4"/><use href="#lgL5"/><use href="#lgL6"/><g style="fill:var(--lgt,currentColor)"><use href="#lgSub"/><use href="#lgLnL"/><use href="#lgLnR"/></g></g>
+<clipPath id="lgClip"><rect x="150" y="186" width="1646" height="336"/></clipPath>
+</defs></svg>
+
+<!-- Загрузчик: тёмный фон под карточкой первого экрана; всё остальное внутри .hero-card -->
+<div class="ld" id="ld" aria-hidden="true"></div>
 
 <nav class="sw" aria-label="Макеты"><a href="../">Макет 1</a><a href="./" aria-current="page">Макет 2</a><a href="../v3/">Макет 3</a></nav>
 
 <header class="hd" id="hd">
-  <a class="logo" href="#top" aria-label="Шторме, на главную"><span class="logo-w">ШТОРМÉ</span><span class="logo-t">Текстильные решения</span></a>
+  <a class="logo" href="#top" aria-label="Шторме, на главную"><svg class="lg" viewBox="150 186 1646 452" aria-hidden="true"><use href="#lgAll"/></svg></a>
   <nav class="nav" aria-label="Основное меню">
     <a class="hv" href="#about"><span>О студии</span></a>
     <a class="hv" href="#services"><span>Услуги</span></a>
@@ -318,7 +336,18 @@ button{background:none;border:0;cursor:pointer}
 <main id="main">
   <!-- Первый экран -->
   <section class="hero" aria-labelledby="h1">
-    <div class="hero-bg"><img src="https://images.unsplash.com/photo-1773923819983-c594d5d5142b?auto=format&amp;fit=crop&amp;w=2000&amp;q=78" alt="Гостиная с бархатными шторами и тюлем у большого окна, солнце на полу"></div>
+    <div class="hero-card">
+      <img class="hero-img" src="https://images.unsplash.com/photo-1773923819983-c594d5d5142b?auto=format&amp;fit=crop&amp;w=2000&amp;q=78" alt="Гостиная с бархатными шторами и тюлем у большого окна, солнце на полу">
+      <div class="hero-veil" aria-hidden="true"></div>
+      <div class="hero-blur" aria-hidden="true"></div>
+      <div class="hero-logo" aria-hidden="true">
+        <svg class="lg" viewBox="150 186 1646 452">
+          <g clip-path="url(#lgClip)"><use class="lt" href="#lgL1"/><use class="lt" href="#lgL2"/><use class="lt" href="#lgL3"/><use class="lt" href="#lgL4"/><use class="lt" href="#lgL5"/><use class="lt" href="#lgL6"/></g>
+          <g style="fill:var(--lgt)"><use class="lg-sub" href="#lgSub"/><use class="lg-ln lg-ln-l" href="#lgLnL"/><use class="lg-ln lg-ln-r" href="#lgLnR"/></g>
+        </svg>
+        <div class="ld-pct">Загрузка <span id="ldPct">0</span>%</div>
+      </div>
+    </div>
     <div class="hero-in">
       <p class="eyebrow">Москва&nbsp;&nbsp;/&nbsp;&nbsp;Интерьерный текстиль</p>
       <h1 class="h1" id="h1"><span class="ln"><span>У текстиля</span></span><span class="ln"><span>свой характер</span></span></h1>
@@ -330,6 +359,8 @@ button{background:none;border:0;cursor:pointer}
       <div class="stat"><span class="stat-n" data-to="60">60+</span><span class="stat-l">реализованных объектов</span></div>
       <div class="stat"><span class="stat-n">Индивидуальные</span><span class="stat-l">решения под ваш интерьер</span></div>
     </div>
+    <a class="hero-pub" href="https://mcmaison.ru/interior-flats/antikvariat-i-yarkie-akcenty-kvartira-120-m-v-moskve/" target="_blank" rel="noopener"><b aria-hidden="true">MC</b><span><small>О нас пишут</small>Наш проект в журнале<br>Marie Claire Maison ↗</span></a>
+    <!-- Выпуск на НТВ («Школа ремонта»): добавить второй плашкой, когда выйдет -->
   </section>
 
   <!-- О студии -->
@@ -431,7 +462,7 @@ button{background:none;border:0;cursor:pointer}
 </main>
 
 <footer class="ft" id="contacts">
-  <a class="logo" href="#top" aria-label="Шторме, наверх"><span class="logo-w">ШТОРМÉ</span><span class="logo-t">Текстильные решения</span></a>
+  <a class="logo" href="#top" aria-label="Шторме, наверх"><svg class="lg" viewBox="150 186 1646 452" aria-hidden="true"><use href="#lgAll"/></svg></a>
   <div class="ft-row"><span>Москва</span><a href="tel:+79991234567">+7 (999) 123-45-67</a><a href="mailto:hello@shtorme.ru">hello@shtorme.ru</a></div>
   <div class="ft-row"><a href="#contacts">Telegram</a><a href="#contacts">WhatsApp</a><a href="#contacts">Instagram</a></div>
   <div class="ft-meta"><a href="#contacts">Политика конфиденциальности</a><a href="#contacts">Разработка сайта</a></div>
@@ -440,188 +471,6 @@ button{background:none;border:0;cursor:pointer}
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/ScrollTrigger.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.23/dist/lenis.min.js"></script>
-
-<!-- Шейдер штор: бархат со складками, ламбрекен с фестонами, бахромой и кистями -->
-<script id="curtainFS" type="x-shader/x-fragment">
-precision highp float;
-uniform vec2 uRes;
-uniform float uTime, uOpen, uOpenB, uExit, uN, uSwags, uGather;
-#define PI 3.14159265
-float asp;
-
-float hash(vec2 p){ p = fract(p * vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x * p.y); }
-float noise(vec2 p){
-  vec2 i = floor(p), f = fract(p), w = f * f * (3. - 2. * f);
-  return mix(mix(hash(i), hash(i + vec2(1., 0.)), w.x), mix(hash(i + vec2(0., 1.)), hash(i + vec2(1., 1.)), w.x), w.y);
-}
-float fbm(vec2 p){ float v = 0., a = .5; for (int i = 0; i < 3; i++) { v += a * noise(p); p = p * 2.07 + 1.3; a *= .5; } return v; }
-
-// Ширина полотна на высоте y (0 сверху, 1 снизу): низ отстаёт от верха и расходится к подолу
-float panelW(float y){
-  float o = mix(uOpen, uOpenB, smoothstep(0., 1., y));
-  return mix(.515, uGather, o) + .04 * o * y * y;
-}
-float shiftX(){ return -uExit * (uGather + .1); }
-
-// Глубина складки. u: координата по ткани от стены (0) до переднего края (1)
-float foldZ(vec2 p, float seed, out float u, out float ph){
-  float W = panelW(p.y);
-  u = (p.x - shiftX()) / W;
-  float uw = u + .045 * sin(u * 8.7 + seed) + .02 * sin(u * 21.3 + seed * 2.1);       // неровный шаг складок
-  float wob = (fbm(vec2(u * 2.1 + seed, p.y * 1.2 - seed)) - .5) * mix(1.4, 3.4, p.y);  // к низу складки гуляют сильнее
-  float br = sin(uTime * .8 + u * 5.1 + seed) * .16 * (1. - uOpen) * p.y;
-  ph = uw * uN * 2. * PI + wob + br;
-  float f = .5 + .5 * cos(ph);
-  float h = pow(f, .62) * 2. - 1. + .08 * cos(2. * ph + 1.3);                         // широкий гребень, узкая впадина
-  float A = (W * asp / uN) * mix(.24, .5, uOpen) * mix(.7, 1.2, p.y) * (.7 + .6 * noise(vec2(uw * uN * .7 + seed, 1.7)));
-  return A * h;
-}
-
-vec3 velvet(vec3 n, float ao, vec2 t, float seed){
-  vec3 L = normalize(vec3(.45, -.6, .8));
-  float diff = clamp(dot(n, L) * .65 + .35, 0., 1.);
-  float rim = pow(1. - max(n.z, 0.), 1.7);
-  float spec = pow(max(dot(n, normalize(L + vec3(0., 0., 1.))), 0.), 24.);
-  vec3 col = mix(vec3(.03, .004, .01), vec3(.25, .03, .062), diff * ao);
-  col = mix(col, vec3(.47, .075, .11), pow(diff, 3.) * ao * .55);
-  col += vec3(.92, .4, .42) * rim * .17 * (.25 + .75 * diff) * ao;
-  col += vec3(1., .82, .76) * spec * .045 * ao;
-  col *= .84 + .32 * fbm(vec2(t.x * 15. + seed * 3., t.y * 2.8));   // мятый бархат
-  return col;
-}
-
-vec4 panel(vec2 p, float seed, out float u, out float W){
-  W = panelW(p.y);
-  u = (p.x - shiftX()) / W;
-  if (u < -.01 || u > 1.02) return vec4(0.);
-  float ph, u1, ph1;
-  foldZ(p, seed, u, ph);
-  float e = 1.5 / uRes.y;
-  float zx = foldZ(p + vec2(e / asp, 0.), seed, u1, ph1) - foldZ(p - vec2(e / asp, 0.), seed, u1, ph1);
-  float zy = foldZ(p + vec2(0., e), seed, u1, ph1) - foldZ(p - vec2(0., e), seed, u1, ph1);
-  vec3 n = normalize(vec3(-zx / (2. * e), -zy / (2. * e), 1.));
-  float crest = cos(ph) * .5 + .5;
-  float ao = mix(.18, 1., smoothstep(0., .7, crest));
-  vec3 col = velvet(n, ao, vec2(u, p.y), seed);
-  col += vec3(.9, .38, .38) * .16 * smoothstep(.95, 1., u);           // подвёрнутый край ловит свет
-  float a = clamp((1. - u) * W * uRes.x, 0., 1.) * clamp((u + .01) * W * uRes.x, 0., 1.);
-  return vec4(col * a, a);
-}
-
-// Ламбрекен: прямая планка и фестоны с поперечными складками
-const float BOARD = .068;
-float swagZ(vec2 q, out float s, out float bottom){
-  s = fract(q.x * uSwags);
-  bottom = BOARD + .078 * pow(sin(PI * s), .8);
-  float t = (q.y - BOARD) / max(bottom - BOARD, .001);
-  float ph = t * 2.4 * 2. * PI - pow(abs(s - .5) * 2., 2.) * 1.8;
-  return .0095 * (pow(.5 + .5 * cos(ph), .6) * 2. - 1.) * smoothstep(0., .12, t);
-}
-vec3 goldCord(vec2 q, float k){
-  float tw = .5 + .5 * sin((q.x * asp * k - q.y) * uRes.y * .9);
-  return mix(vec3(.34, .21, .07), vec3(.96, .8, .47), tw);
-}
-vec4 valance(vec2 p, out float vb){
-  float lift = uExit * .34;
-  vec2 q = vec2(p.x, p.y + lift);
-  float s, bottom;
-  swagZ(q, s, bottom);
-  vb = bottom - lift;
-  if (q.y < BOARD) {
-    float g = q.y / BOARD;
-    vec3 col = mix(vec3(.15, .02, .042), vec3(.33, .045, .085), smoothstep(0., .9, g));
-    col *= .9 + .2 * fbm(vec2(q.x * asp * 40., q.y * 6.));
-    float b = smoothstep(BOARD - .0095, BOARD - .0078, q.y) * (1. - smoothstep(BOARD - .0016, BOARD, q.y));
-    col = mix(col, goldCord(q, 1.), b);
-    return vec4(col, 1.);
-  }
-  if (q.y < bottom) {
-    float e = 1.5 / uRes.y, s1, b1;
-    float zx = swagZ(q + vec2(e / asp, 0.), s1, b1) - swagZ(q - vec2(e / asp, 0.), s1, b1);
-    float zy = swagZ(q + vec2(0., e), s1, b1) - swagZ(q - vec2(0., e), s1, b1);
-    vec3 n = normalize(vec3(-zx / (2. * e), -zy / (2. * e), 1.));
-    float ao = mix(.45, 1., smoothstep(0., .55, sin(PI * s)));
-    vec3 col = velvet(n, ao, vec2(s * 3., q.y * 4.), 4.2);
-    float d = (bottom - q.y) * uRes.y;
-    col = mix(col, goldCord(q, 1.4), 1. - smoothstep(5., 6.5, d));
-    float a = clamp(d + .5, 0., 1.);
-    return vec4(col * a, a);
-  }
-  float tx = q.x * uRes.x / 2.6, id = floor(tx);
-  float f = (q.y - bottom) / (.024 * (.8 + .2 * hash(vec2(id, 3.))));
-  if (f < 1.) {
-    float th = .5 + .5 * cos(fract(tx) * 2. * PI);
-    vec3 col = mix(vec3(.11, .014, .028), vec3(.5, .09, .13), th * (1. - f * .6));
-    float a = 1. - smoothstep(.85, 1., f);
-    return vec4(col * a, a);
-  }
-  return vec4(0.);
-}
-
-// Кисти на стыках фестонов
-vec4 tassel(vec2 p){
-  vec2 q = vec2(p.x, p.y + uExit * .34);
-  float jx = floor(q.x * uSwags + .5) / uSwags;
-  float X = (q.x - jx) * asp, Y = q.y - BOARD, px = 1. / uRes.y;
-  vec3 gold = vec3(.74, .55, .25), dark = vec3(.26, .15, .05), hi = vec3(1., .9, .62);
-  vec3 L = normalize(vec3(.3, -.6, .8));
-  if (Y > 0. && Y < .052) {
-    float a = 1. - smoothstep(.0016 - px, .0016 + px, abs(X));
-    if (a > 0.) return vec4(mix(dark, gold, .5 + .5 * sin(Y * uRes.y * 1.3)) * a, a);
-  }
-  vec2 k = vec2(X / .011, (Y - .064) / .0135);
-  float r = length(k);
-  if (r < 1.) {
-    vec3 n = normalize(vec3(k.x, -k.y * .8, sqrt(max(1. - r * r, 0.))));
-    float d = clamp(dot(n, L), 0., 1.);
-    vec3 col = mix(dark, gold, d) + hi * pow(d, 14.) * .55;
-    float a = clamp((1. - r) * .011 / px, 0., 1.);
-    return vec4(col * a, a);
-  }
-  if (Y > .0755 && Y < .0825 && abs(X) < .0085) {
-    float d = .5 + .5 * cos((Y - .079) / .0035 * PI);
-    return vec4(mix(dark, hi, d * .8), 1.);
-  }
-  if (Y >= .0815 && Y < .152) {
-    float f = (Y - .0815) / .0705, hw = mix(.0075, .0165, pow(f, .7));
-    if (abs(X) < hw + px) {
-      float th = .5 + .5 * cos(X / hw * 20. + hash(vec2(floor(X * 900.), 1.)) * 2.);
-      float sh = 1. - pow(abs(X) / hw, 3.);
-      vec3 col = mix(dark, gold, th * sh * (1. - f * .3)) + hi * .12 * sh;
-      float a = clamp((hw - abs(X)) / px, 0., 1.) * (1. - smoothstep(.9, 1., f + .08 * hash(vec2(floor(X * 1400.), 2.))));
-      return vec4(col * a, a);
-    }
-  }
-  return vec4(0.);
-}
-
-void main(){
-  asp = uRes.x / uRes.y;
-  vec2 p = vec2(gl_FragCoord.x / uRes.x, 1. - gl_FragCoord.y / uRes.y);
-  float uL, WL, uR, WR, vb;
-  vec4 R = panel(vec2(1. - p.x, p.y), 7.31, uR, WR);
-  vec4 Lc = panel(p, 1.37, uL, WL);
-  vec4 V = valance(p, vb);
-  vec4 T = tassel(p);
-
-  float spot = mix(.5, 1.25, exp(-pow((p.x - .5) * asp * .7, 2.))) * mix(1.15, .55, pow(p.y, 1.2));
-  float vsh = .6 * exp(-max(p.y - vb - .02, 0.) * 26.) * step(vb, p.y);   // тень от ламбрекена
-  // тень за передним краем, начиная с пикселя сглаживания, чтобы фон не просвечивал светлой линией
-  float sL = uL > 1. - 2. / (WL * uRes.x) ? .5 * exp(-max(uL - 1., 0.) * WL * asp * 22.) : 0.;
-  float sR = uR > 1. - 2. / (WR * uRes.x) ? .5 * exp(-max(uR - 1., 0.) * WR * asp * 22.) : 0.;
-  float sBg = (1. - (1. - sL) * (1. - sR) * (1. - vsh * .5)) * (1. - uExit);
-
-  R.rgb *= spot * (1. - sL * .7) * (1. - vsh);
-  Lc.rgb *= spot * (1. - vsh);
-  vec4 acc = vec4(0., 0., 0., sBg);
-  acc = R + acc * (1. - R.a);
-  acc = Lc + acc * (1. - Lc.a);
-  acc = V + acc * (1. - V.a);
-  acc = T + acc * (1. - T.a);
-  acc.rgb += (hash(gl_FragCoord.xy + fract(uTime)) - .5) * .014 * acc.a;    // зерно
-  gl_FragColor = acc;
-}
-</script>
 
 <script>
 (() => {
@@ -697,7 +546,7 @@ void main(){
   $('#dsGo').addEventListener('click', () => { $('#whoD').checked = true; });
 
   const ld = $('#ld');
-  if (!window.gsap || !window.ScrollTrigger || !window.Lenis) { root.classList.remove('js'); ld.remove(); return; }
+  if (!window.gsap || !window.ScrollTrigger || !window.Lenis) { root.classList.remove('js', 'is-loading'); ld.remove(); return; }
   gsap.registerPlugin(ScrollTrigger);
   const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -714,115 +563,80 @@ void main(){
     e.preventDefault(); lenis.scrollTo(el, { offset: el.id === 'top' ? 0 : -70 });
   });
 
-  // ---------- Загрузчик: шторы ----------
-  const st = { open: 0, openB: 0, exit: 0 };
-  const cv = $('#ldCv'), pctEl = $('#ldPct');
-  let draw = null;
-  if (!RM) draw = initCurtains();
-  if (!draw && !RM) ld.classList.add('is-css');
+  // ---------- Загрузчик: размытое фото и буквы логотипа, карточка «вдыхает», логотип улетает в шапку ----------
+  const hero = $('.hero'), card = $('.hero-card'), blurEl = $('.hero-blur'), logoEl = $('.hero-logo'), hdLogo = $('.hd .logo'), pctEl = $('#ldPct');
+  // карточка накрывает всё окно, даже когда первый экран ниже окна (у него max-height)
+  const coverScale = () => Math.max(1, (2 * innerHeight - card.offsetHeight) / card.offsetHeight) * 1.01;
+  gsap.set(logoEl, { xPercent: -50, yPercent: -50, x: 0, y: 0 });
+  gsap.set(card, { scale: RM ? 1 : coverScale(), borderRadius: 0, autoAlpha: 0 });
+  gsap.set('.hero-logo .lt', { y: 360 });                       // буквы прячутся под маской lgClip
+  gsap.set('.lg-sub', { autoAlpha: 0 });
+  gsap.set('.lg-ln-l', { scaleX: 0, transformOrigin: '100% 50%' });
+  gsap.set('.lg-ln-r', { scaleX: 0, transformOrigin: '0% 50%' });
+  const enter = gsap.timeline()
+    .to(card, { autoAlpha: 1, duration: 1.1, ease: 'power2.out' }, .25)
+    .to('.hero-logo .lt', { y: 0, duration: 1.1, ease: 'expo.out', stagger: .08 }, .55)
+    .to('.lg-ln', { scaleX: 1, duration: 1.3, ease: 'expo.inOut' }, 1)
+    .to('.lg-sub', { autoAlpha: 1, duration: .9, ease: 'power2.out' }, 1.25);
 
-  function initCurtains() {
-    const gl = cv.getContext('webgl', { premultipliedAlpha: true, alpha: true, antialias: false });
-    if (!gl) return null;
-    const sh = (type, src) => { const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); return gl.getShaderParameter(s, gl.COMPILE_STATUS) ? s : (console.warn(gl.getShaderInfoLog(s)), null); };
-    const vs = sh(gl.VERTEX_SHADER, 'attribute vec2 a;void main(){gl_Position=vec4(a,0.,1.);}');
-    const fs = sh(gl.FRAGMENT_SHADER, $('#curtainFS').textContent);
-    if (!vs || !fs) return null;
-    const pr = gl.createProgram(); gl.attachShader(pr, vs); gl.attachShader(pr, fs); gl.linkProgram(pr);
-    if (!gl.getProgramParameter(pr, gl.LINK_STATUS)) return null;
-    gl.useProgram(pr);
-    gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
-    const loc = gl.getAttribLocation(pr, 'a'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
-    const u = n => gl.getUniformLocation(pr, n);
-    const uRes = u('uRes'), uTime = u('uTime'), uOpen = u('uOpen'), uOpenB = u('uOpenB'), uExit = u('uExit'), uN = u('uN'), uSw = u('uSwags'), uG = u('uGather');
-    const size = () => {
-      const narrow = innerWidth < 760, dpr = Math.min(devicePixelRatio || 1, innerWidth * innerHeight > 1.6e6 ? 1 : 1.5);
-      cv.width = Math.round(innerWidth * dpr); cv.height = Math.round(innerHeight * dpr);
-      gl.viewport(0, 0, cv.width, cv.height);
-      gl.uniform2f(uRes, cv.width, cv.height);
-      gl.uniform1f(uN, narrow ? 4.5 : 7);
-      gl.uniform1f(uSw, narrow ? 2 : Math.max(3, Math.round(innerWidth / 380)));
-      gl.uniform1f(uG, narrow ? .2 : .125);
-    };
-    size(); addEventListener('resize', size);
-    const t0 = performance.now();
-    return () => {
-      gl.uniform1f(uTime, (performance.now() - t0) / 1000);
-      gl.uniform1f(uOpen, st.open); gl.uniform1f(uOpenB, st.openB); gl.uniform1f(uExit, st.exit);
-      gl.drawArrays(gl.TRIANGLES, 0, 3);
-    };
-  }
-
-  // Прогресс: картинки первого экрана и шрифты, не меньше 2,2 с, не дольше 4 с
-  const wait = $$('.hero img');
-  const total = wait.length + 1;
-  let loaded = 0, target = 0, shown = 0, done = false, firstFrame = true;
+  // Прогресс: фото первого экрана и шрифты, не меньше 2,4 с; через 4,2 с считаем загруженным
+  const waitImgs = [$('.hero-img')];
+  const total = waitImgs.length + 1;
+  let loaded = 0, target = 0, shown = 0, done = false;
   const bump = () => { loaded++; target = loaded / total; };
-  wait.forEach(img => (img.complete && img.naturalWidth) ? bump() : (img.addEventListener('load', bump, { once: true }), img.addEventListener('error', bump, { once: true })));
+  waitImgs.forEach(img => (img.complete && img.naturalWidth) ? bump() : (img.addEventListener('load', bump, { once: true }), img.addEventListener('error', bump, { once: true })));
   document.fonts.ready.then(bump);
-  const MIN = RM ? .2 : 2.2, tStart = performance.now();
-  let last = performance.now();
-  const frame = () => {
-    const now = performance.now(), dt = Math.min(.05, (now - last) / 1000); last = now;
-    st.openB += (st.open - st.openB) * (1 - Math.exp(-dt * 2.6));     // низ ткани догоняет верх
-    if (!done) {
-      const cap = Math.min(1, (now - tStart) / 1000 / MIN);
-      shown += (Math.min(target, cap) - shown) * .1;
-      if (Math.min(target, cap) >= 1 && shown > .995) shown = 1;
-      pctEl.textContent = Math.round(shown * 100) + '%';
-      if (shown === 1) part();
-    }
-    if (draw) { draw(); if (firstFrame) { firstFrame = false; ld.classList.add('is-live'); } }
+  const MIN = RM ? .3 : 2.4, t0 = performance.now();
+  const tick = () => {
+    const cap = Math.min(1, (performance.now() - t0) / 1000 / MIN);
+    shown += (Math.min(target, cap) - shown) * .1;
+    if (Math.min(target, cap) >= 1 && shown > .995) shown = 1;
+    pctEl.textContent = Math.round(shown * 100);
+    if (shown === 1) land();
   };
-  gsap.ticker.add(frame);
-  // ?hold: шторы не открываются сами, состояние можно крутить из консоли (для настройки)
-  const HOLD = /[?&]hold\b/.test(location.search);
-  if (HOLD) {
-    done = true;
-    window.__curtain = { st, part: () => { done = false; part(); },
-      // лупа: кусок холста в 2,5 раза крупнее поверх страницы
-      zoom(x, y, w, h) {
-        if (!draw) return; draw();
-        let z = $('#__zoom'); if (!z) { z = document.createElement('canvas'); z.id = '__zoom'; z.style.cssText = 'position:fixed;inset:0;z-index:9999;width:100%;height:100%;background:#000'; document.body.appendChild(z); }
-        z.width = innerWidth; z.height = innerHeight;
-        const k = cv.width / innerWidth;
-        z.getContext('2d').drawImage(cv, x * k, y * k, w * k, h * k, 0, 0, innerWidth, innerHeight);
-      },
-      unzoom() { const z = $('#__zoom'); if (z) z.remove(); } };
-  }
-  else {
-    setTimeout(() => { target = 1; }, 4000);
-    setTimeout(() => part(), 7500);
-  }
+  gsap.ticker.add(tick);
+  setTimeout(() => { target = 1; }, 4200);
+  setTimeout(() => land(), 8000);
 
-  function part() {
+  function land() {
     if (done) return; done = true;
-    pctEl.textContent = '100%';
-    const tl = gsap.timeline({ onComplete() { gsap.ticker.remove(frame); ld.remove(); root.classList.remove('is-locked'); lenis.start(); ScrollTrigger.refresh(); } });
-    if (RM) { tl.to(ld, { autoAlpha: 0, duration: .4 }); intro(tl, 0); return; }
-    tl.to('#ldMark', { autoAlpha: 0, duration: .6, ease: 'power2.in' }, 0);
-    if (draw) {
-      tl.to(st, { open: 1, duration: 2.6, ease: 'power2.inOut' }, .35)
-        .to(st, { exit: 1, duration: 1.3, ease: 'power2.in' }, 2.4)
-        .to(cv, { autoAlpha: 0, duration: .5, ease: 'none' }, 3.25);
-    } else {
-      tl.to('.ld-css i:first-child', { xPercent: -100, duration: 1.8, ease: 'power3.inOut' }, .3)
-        .to('.ld-css i:last-child', { xPercent: 100, duration: 1.8, ease: 'power3.inOut' }, .3)
-        .to(ld, { backgroundColor: 'rgba(42,11,16,0)', duration: .6 }, .3);
+    gsap.ticker.remove(tick);
+    enter.progress(1);
+    // куда лететь: центр логотипа в шапке относительно первого экрана (размеры без учёта трансформаций)
+    const h = hero.getBoundingClientRect(), r = hdLogo.getBoundingClientRect();
+    const fly = { x: r.left + r.width / 2 - h.left - logoEl.offsetLeft, y: r.top + r.height / 2 - h.top - logoEl.offsetTop, scale: r.width / logoEl.offsetWidth };
+    const tl = gsap.timeline({ onComplete() {
+      root.classList.remove('is-locked'); ld.remove(); blurEl.remove(); logoEl.remove();
+      gsap.set(card, { clearProps: 'transform,borderRadius' });
+      lenis.start(); ScrollTrigger.refresh();
+    }});
+    if (RM) {
+      tl.add(() => root.classList.remove('is-loading')).set([blurEl, logoEl], { autoAlpha: 0 }).set(['.hero-veil', hdLogo], { autoAlpha: 1 }).to(ld, { autoAlpha: 0, duration: .3 });
+      intro(tl, 0); return;
     }
-    intro(tl, draw ? 1.1 : .7);
+    tl.to('.ld-pct', { autoAlpha: 0, duration: .4 }, 0)
+      .to(card, { scale: .74, borderRadius: 44, duration: 1.15, ease: 'expo.inOut' }, 0)
+      .to(card, { scale: 1, borderRadius: 0, duration: 1.35, ease: 'expo.inOut' }, 1.35)
+      .fromTo('.hero-img', { scale: 1.12 }, { scale: 1, duration: 3, ease: 'expo.out' }, 1.35)
+      .to(ld, { autoAlpha: 0, duration: .7, ease: 'none' }, 1.45)
+      .add(() => root.classList.remove('is-loading'), 2.15)          // первый экран опускается под шапку
+      .to(blurEl, { autoAlpha: 0, duration: 1.1, ease: 'power2.out' }, 1.6)
+      .to('.hero-veil', { autoAlpha: 1, duration: 1.1, ease: 'power2.out' }, 1.6)
+      .to(logoEl, { ...fly, color: '#2A211E', '--lgt': '#7D706B', duration: 1.35, ease: 'expo.inOut' }, 1.35)
+      .set(hdLogo, { autoAlpha: 1 }, 2.7)
+      .set(logoEl, { autoAlpha: 0 }, 2.7);
+    intro(tl, 2.2);
   }
 
   function intro(tl, at) {
-    tl.fromTo('.hero-bg img', { scale: 1.14 }, { scale: 1, duration: 2.6, ease: 'expo.out' }, at - .4)
-      .fromTo('.hd', { autoAlpha: 0, y: -14 }, { autoAlpha: 1, y: 0, duration: 1, ease: 'expo.out' }, at + .3)
+    tl.fromTo(['.hd .nav', '.hd .hd-btn'], { autoAlpha: 0, y: -14 }, { autoAlpha: 1, y: 0, duration: 1, ease: 'expo.out', stagger: .08 }, at + .2)
       .set('.hero-in>*', { autoAlpha: 1 }, at)
       .fromTo('.hero .eyebrow', { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: .9, ease: 'expo.out' }, at)
       .fromTo('.h1 .ln>span', { yPercent: 110 }, { yPercent: 0, duration: 1.3, ease: 'expo.out', stagger: .12 }, at + .08)
       .fromTo(['.hero-p', '.hero .btn'], { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 1, ease: 'expo.out', stagger: .1 }, at + .4)
       .fromTo('.stats', { autoAlpha: 0 }, { autoAlpha: 1, duration: .6 }, at + .6)
       .fromTo('.stat', { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: .9, ease: 'expo.out', stagger: .1 }, at + .6)
+      .fromTo('.hero-pub', { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 1, ease: 'expo.out' }, at + .85)
       .add(() => $$('.stat-n[data-to]').forEach(el => {
         const o = { v: 0 }, to = +el.dataset.to;
         gsap.to(o, { v: to, duration: 1.6, ease: 'power2.out', onUpdate: () => { el.textContent = Math.round(o.v) + '+'; } });
