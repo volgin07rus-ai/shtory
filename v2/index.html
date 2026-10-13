@@ -182,6 +182,14 @@ button{background:none;border:0;cursor:pointer}
 .dirs-head{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr) auto;gap:clamp(24px,4vw,64px);align-items:end}
 .dirs-head .lead{max-width:24rem;font-size:15px;color:var(--muted)}
 .dirs-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:clamp(10px,1vw,16px);margin-top:clamp(32px,3vw,48px)}
+/* у всех карточек общие строки: фото, заголовок, описание и стрелка стоят на одном уровне, даже если текст разной длины */
+.dir,.dir>a{display:grid;grid-row:span 4;grid-template-rows:subgrid;row-gap:0}
+.dir .arr{justify-self:start;align-self:start}
+@supports not (grid-template-rows:subgrid){
+  .dir>a{display:flex;flex-direction:column;height:100%}
+  .dir h3{min-height:2.6em}
+  .dir .arr{margin-top:auto;padding-top:16px}
+}
 .dir .pic{aspect-ratio:1.04;border-radius:4px}
 .dir .pic img{transition:transform 1.2s var(--ease)}
 .hoverable .dir:hover .pic img{transform:scale(1.05)}
