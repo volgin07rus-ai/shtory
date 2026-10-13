@@ -65,7 +65,8 @@ button{background:none;border:0;cursor:pointer}
 .is-loading .hero{z-index:510}
 .is-loading .hero-card{visibility:hidden}
 .hero-blur,.hero-logo{display:none}
-.js .hero-blur{display:block;position:absolute;inset:0;z-index:2;background:linear-gradient(90deg,rgba(52,16,22,.95) 0%,rgba(52,16,22,.9) 40%,rgba(29,14,12,.5) 66%);-webkit-backdrop-filter:blur(26px);backdrop-filter:blur(26px)}
+/* размыто само фото (filter из JS), а не подложка: backdrop-filter на дробной границе карточки давал светлую кромку */
+.js .hero-blur{display:block;position:absolute;inset:0;z-index:2;background:linear-gradient(90deg,rgba(52,16,22,.95) 0%,rgba(52,16,22,.9) 40%,rgba(29,14,12,.5) 66%)}
 .js .hero-logo{display:block;position:absolute;left:50%;top:min(50%,50svh);z-index:3;width:clamp(250px,46vw,760px);color:#F4EEE6;--lgt:rgba(244,238,230,.82);transform:translate(-50%,-50%)}
 .hero-logo .lg{width:100%;height:auto;overflow:visible}
 .ld-pct{position:absolute;left:0;right:0;top:calc(100% + clamp(30px,5vh,56px));text-align:center;font:500 11px/1 var(--sans);letter-spacing:.3em;text-transform:uppercase;color:rgba(244,238,230,.6);font-variant-numeric:tabular-nums}
@@ -89,6 +90,8 @@ button{background:none;border:0;cursor:pointer}
 /* ---------- Первый экран ---------- */
 .hero{position:relative;isolation:isolate;min-height:max(680px,100svh);max-height:1000px;display:flex;flex-direction:column;justify-content:flex-end;padding:124px var(--pad) clamp(36px,5vh,60px);overflow:hidden;color:var(--ink)}
 .hero-card{position:absolute;inset:0;z-index:-1;overflow:hidden;background:var(--bg)}
+/* бежевое поле чуть отступает от края: пока идёт загрузчик, фон карточки тёмный, и светлая кромка не проступает по контуру */
+.hero-card::before{content:'';position:absolute;inset:2px;border-radius:inherit;background:var(--bg)}
 .hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 50%}
 /* фото вертикальное: на компьютере справа, левый край сам растворяется в бежевом (маска с плавным спадом) */
 @media (min-width:761px){.hero-img{left:auto;width:52%;-webkit-mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.05) 8%,rgba(0,0,0,.18) 17%,rgba(0,0,0,.4) 27%,rgba(0,0,0,.66) 37%,rgba(0,0,0,.86) 46%,#000 56%);mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.05) 8%,rgba(0,0,0,.18) 17%,rgba(0,0,0,.4) 27%,rgba(0,0,0,.66) 37%,rgba(0,0,0,.86) 46%,#000 56%)}}
@@ -635,7 +638,8 @@ button{background:none;border:0;cursor:pointer}
   // карточка накрывает всё окно, даже когда первый экран ниже окна (у него max-height)
   const coverScale = () => Math.max(1, (2 * innerHeight - card.offsetHeight) / card.offsetHeight) * 1.01;
   gsap.set(logoEl, { xPercent: -50, yPercent: -50, x: 0, y: 0 });
-  gsap.set(card, { scale: RM ? 1 : coverScale(), borderRadius: 0, autoAlpha: 0 });
+  gsap.set(card, { scale: RM ? 1 : coverScale(), borderRadius: 0, autoAlpha: 0, backgroundColor: '#1D1210' });   // тёмный под цвет загрузчика
+  gsap.set('.hero-img', { filter: 'blur(26px)' });
   gsap.set('.hero-logo .lt', { y: 360 });                       // буквы прячутся под маской lgClip
   gsap.set('.lg-sub', { autoAlpha: 0 });
   gsap.set('.lg-ln-l', { scaleX: 0, transformOrigin: '100% 50%' });
@@ -674,11 +678,12 @@ button{background:none;border:0;cursor:pointer}
     const fly = { x: r.left + r.width / 2 - h.left - logoEl.offsetLeft, y: r.top + r.height / 2 - h.top - logoEl.offsetTop, scale: r.width / logoEl.offsetWidth };
     const tl = gsap.timeline({ onComplete() {
       root.classList.remove('is-locked'); ld.remove(); blurEl.remove(); logoEl.remove();
-      gsap.set(card, { clearProps: 'transform,borderRadius' });
+      gsap.set(card, { clearProps: 'transform,borderRadius,backgroundColor' });
+      gsap.set('.hero-img', { clearProps: 'filter' });
       lenis.start(); ScrollTrigger.refresh();
     }});
     if (RM) {
-      tl.add(() => root.classList.remove('is-loading')).set([blurEl, logoEl], { autoAlpha: 0 }).set(['.hero-veil', hdLogo], { autoAlpha: 1 }).to(ld, { autoAlpha: 0, duration: .3 });
+      tl.add(() => root.classList.remove('is-loading')).set([blurEl, logoEl], { autoAlpha: 0 }).set(['.hero-veil', hdLogo], { autoAlpha: 1 }).set(card, { backgroundColor: '#EFEBE4' }).set('.hero-img', { filter: 'none' }).to(ld, { autoAlpha: 0, duration: .3 });
       intro(tl, 0); return;
     }
     tl.to('.ld-pct', { autoAlpha: 0, duration: .4 }, 0)
@@ -686,8 +691,10 @@ button{background:none;border:0;cursor:pointer}
       .to(card, { scale: 1, borderRadius: 0, duration: 1.35, ease: 'expo.inOut' }, 1.35)
       .fromTo('.hero-img', { scale: 1.12 }, { scale: 1, duration: 3, ease: 'expo.out' }, 1.35)
       .to(ld, { autoAlpha: 0, duration: .7, ease: 'none' }, 1.45)
+      .to(card, { backgroundColor: '#EFEBE4', duration: .7, ease: 'none' }, 1.45)   // край светлеет вместе с фоном вокруг
       .add(() => root.classList.remove('is-loading'), 2.7)           // первый экран опускается под шапку, её полоса проявляется
       .to(blurEl, { autoAlpha: 0, duration: 1.1, ease: 'power2.out' }, 1.6)
+      .to('.hero-img', { filter: 'blur(0px)', duration: 1.1, ease: 'power2.out' }, 1.6)
       .to('.hero-veil', { autoAlpha: 1, duration: 1.1, ease: 'power2.out' }, 1.6)
       .to(logoEl, { ...fly, color: '#2A211E', '--lgt': '#7D706B', duration: 1.35, ease: 'expo.inOut' }, 1.35)
       .set(hdLogo, { autoAlpha: 1 }, 2.7)
