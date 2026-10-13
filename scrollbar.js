@@ -15,7 +15,7 @@ html::-webkit-scrollbar{display:none}
 .sb:hover .sb-th,.sb.is-drag .sb-th{width:9px}
 .sb-drag,.sb-drag *{user-select:none !important;cursor:grabbing !important}
 @media (hover:none) and (pointer:coarse){.sb{display:none}}
-@media (prefers-reduced-motion:reduce){.sb,.sb *,.sb::before{transition:none !important}}`;
+`;
   document.head.appendChild(style);
   if (matchMedia('(hover:none) and (pointer:coarse)').matches) return;   // телефон и планшет: листают пальцем, ползунок не нужен
 

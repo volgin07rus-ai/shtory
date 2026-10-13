@@ -363,10 +363,6 @@ button{background:none;border:0;cursor:pointer}
   .ft{flex-direction:column;align-items:flex-start}
   .ft-row+.ft-row,.ft-meta{padding-left:0;border-left:0;margin-left:0}
 }
-@media (prefers-reduced-motion:reduce){
-  .js [data-r],.js .hd>*,.js .hero-in>*,.js .stats,.js .hero-pub,.js .hero-veil{opacity:1 !important;transform:none !important}
-  .js [data-clip]{clip-path:none !important}
-}
 </style>
 </head>
 <body id="top">
@@ -667,10 +663,10 @@ button{background:none;border:0;cursor:pointer}
   const ld = $('#ld');
   if (!window.gsap || !window.ScrollTrigger || !window.Lenis) { root.classList.remove('js', 'is-loading'); ld.remove(); return; }
   gsap.registerPlugin(ScrollTrigger);
-  const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // настройку «Уменьшение движения» сайт не учитывает: анимации играют всегда (решение заказчика, 14.10.2026)
 
   // ---------- Плавный скролл ----------
-  const lenis = window.__lenis = new Lenis({ lerp: 0.09, smoothWheel: !RM });
+  const lenis = window.__lenis = new Lenis({ lerp: 0.09 });
   lenis.on('scroll', ScrollTrigger.update);
   gsap.ticker.add(t => lenis.raf(t * 1000));
   gsap.ticker.lagSmoothing(0);
@@ -687,7 +683,7 @@ button{background:none;border:0;cursor:pointer}
   // карточка накрывает всё окно, даже когда первый экран ниже окна (у него max-height)
   const coverScale = () => Math.max(1, (2 * innerHeight - card.offsetHeight) / card.offsetHeight) * 1.01;
   gsap.set(logoEl, { xPercent: -50, yPercent: -50, x: 0, y: 0 });
-  gsap.set(card, { scale: RM ? 1 : coverScale(), borderRadius: 0, autoAlpha: 0, backgroundColor: '#1D1210' });   // тёмный под цвет загрузчика
+  gsap.set(card, { scale: coverScale(), borderRadius: 0, autoAlpha: 0, backgroundColor: '#1D1210' });   // тёмный под цвет загрузчика
   // Пока фото размыто, оно увеличено: полупрозрачная кромка размытия уходит за край карточки и не светлеет по бокам.
   // Потом фото оседает, и резкость возвращается вместе с масштабом, так что кромка не успевает показаться.
   const ZOOM = 1.3, BLUR = 20;                                  // 20px при увеличении 1.3 на экране ≈ 26px
@@ -710,7 +706,7 @@ button{background:none;border:0;cursor:pointer}
   const bump = () => { loaded++; target = loaded / total; };
   waitImgs.forEach(img => (img.complete && img.naturalWidth) ? bump() : (img.addEventListener('load', bump, { once: true }), img.addEventListener('error', bump, { once: true })));
   document.fonts.ready.then(bump);
-  const MIN = RM ? .3 : 2.4, t0 = performance.now();
+  const MIN = 2.4, t0 = performance.now();
   const tick = () => {
     const cap = Math.min(1, (performance.now() - t0) / 1000 / MIN);
     shown += (Math.min(target, cap) - shown) * .1;
@@ -744,10 +740,6 @@ button{background:none;border:0;cursor:pointer}
       gsap.set('.hero-img', { clearProps: 'filter,transform' });
       lenis.start(); ScrollTrigger.refresh();
     }});
-    if (RM) {
-      tl.add(() => root.classList.remove('is-loading')).set([blurEl, logoEl], { autoAlpha: 0 }).set(['.hero-veil', hdLogo], { autoAlpha: 1 }).set(card, { backgroundColor: '#EFEBE4' }).set('.hero-img', { scale: 1, filter: 'none' }).to(ld, { autoAlpha: 0, duration: .3 });
-      intro(tl, 0); return;
-    }
     tl.to('.ld-pct', { autoAlpha: 0, duration: .4 }, 0)
       .to(card, { scale: .74, borderRadius: 44, duration: 1.15, ease: 'expo.inOut' }, 0)
       .to(card, { scale: 1, borderRadius: 0, duration: 1.35, ease: 'expo.inOut' }, 1.35)
@@ -762,7 +754,7 @@ button{background:none;border:0;cursor:pointer}
     intro(tl, 2.2, 2.05);
   }
 
-  function intro(tl, at, hdAt = at + .5) {
+  function intro(tl, at, hdAt) {
     tl.fromTo(['.hd .nav', '.hd .hd-btn'], { autoAlpha: 0, y: -14 }, { autoAlpha: 1, y: 0, duration: 1, ease: 'expo.out', stagger: .08 }, hdAt)
       .set('.hero .h1', { autoAlpha: 1 }, at)                          // только заголовок: строки выезжают из-под маски; остальное проявляется своими анимациями
       .fromTo('.hero .eyebrow', { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: .9, ease: 'expo.out' }, at)
@@ -783,22 +775,19 @@ button{background:none;border:0;cursor:pointer}
   lenis.on('scroll', onScroll); addEventListener('resize', onScroll); onScroll();
 
   // ---------- Появления ----------
-  if (RM) gsap.set('[data-clip]', { clipPath: 'none' });
-  else {
-    ScrollTrigger.batch('[data-r]', { start: 'top 90%', once: true, onEnter: b =>
-      gsap.to(b, { autoAlpha: 1, y: 0, duration: 1, ease: 'expo.out', stagger: .08 }) });
-    ScrollTrigger.batch('[data-clip]', { start: 'top 88%', once: true, onEnter: b => {
-      gsap.fromTo(b, { clipPath: 'inset(0% 0% 100% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.3, ease: 'expo.inOut', stagger: .1 });
-      gsap.fromTo(b.map(x => x.querySelector('img')), { scale: 1.15 }, { scale: 1, duration: 1.8, ease: 'expo.out', stagger: .1 });
-    }});
-    gsap.fromTo('.ds-line', { scaleY: 0 }, { scaleY: 1, ease: 'none', scrollTrigger: { trigger: '.ds', start: 'top 75%', end: 'center 50%', scrub: true } });
-    gsap.from('.ds-list li', { autoAlpha: 0, x: -10, duration: .8, ease: 'expo.out', stagger: .12, scrollTrigger: { trigger: '.ds-list', start: 'top 75%' } });
-    gsap.set('.st-n span', { yPercent: 105 });
-    ScrollTrigger.batch('.st', { start: 'top 88%', once: true, onEnter: b =>
-      gsap.to(b.map(s => s.querySelector('.st-n span')), { yPercent: 0, duration: 1.2, ease: 'expo.out', stagger: .12 }) });
-    gsap.fromTo('.steps-decor img', { yPercent: -6, scale: 1.12 }, { yPercent: 6, ease: 'none', scrollTrigger: { trigger: '.steps', start: 'top bottom', end: 'bottom top', scrub: true } });
-    gsap.from('.rq-quote blockquote', { autoAlpha: 0, y: 24, duration: 1.2, ease: 'expo.out', scrollTrigger: { trigger: '.rq-quote', start: 'top 70%' } });
-  }
+  ScrollTrigger.batch('[data-r]', { start: 'top 90%', once: true, onEnter: b =>
+    gsap.to(b, { autoAlpha: 1, y: 0, duration: 1, ease: 'expo.out', stagger: .08 }) });
+  ScrollTrigger.batch('[data-clip]', { start: 'top 88%', once: true, onEnter: b => {
+    gsap.fromTo(b, { clipPath: 'inset(0% 0% 100% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.3, ease: 'expo.inOut', stagger: .1 });
+    gsap.fromTo(b.map(x => x.querySelector('img')), { scale: 1.15 }, { scale: 1, duration: 1.8, ease: 'expo.out', stagger: .1 });
+  }});
+  gsap.fromTo('.ds-line', { scaleY: 0 }, { scaleY: 1, ease: 'none', scrollTrigger: { trigger: '.ds', start: 'top 75%', end: 'center 50%', scrub: true } });
+  gsap.from('.ds-list li', { autoAlpha: 0, x: -10, duration: .8, ease: 'expo.out', stagger: .12, scrollTrigger: { trigger: '.ds-list', start: 'top 75%' } });
+  gsap.set('.st-n span', { yPercent: 105 });
+  ScrollTrigger.batch('.st', { start: 'top 88%', once: true, onEnter: b =>
+    gsap.to(b.map(s => s.querySelector('.st-n span')), { yPercent: 0, duration: 1.2, ease: 'expo.out', stagger: .12 }) });
+  gsap.fromTo('.steps-decor img', { yPercent: -6, scale: 1.12 }, { yPercent: 6, ease: 'none', scrollTrigger: { trigger: '.steps', start: 'top bottom', end: 'bottom top', scrub: true } });
+  gsap.from('.rq-quote blockquote', { autoAlpha: 0, y: 24, duration: 1.2, ease: 'expo.out', scrollTrigger: { trigger: '.rq-quote', start: 'top 70%' } });
 
   // ---------- Проекты: слайдеры в плитках ----------
   $$('.pt').forEach(tile => {
@@ -814,7 +803,7 @@ button{background:none;border:0;cursor:pointer}
       to.hidden = false; gsap.set(to, { zIndex: 1 }); gsap.set(from, { zIndex: 0 });
       idx.textContent = `${pad(i + 1)} / ${pad(slides.length)}`;
       gsap.timeline({ onComplete() { from.hidden = true; gsap.set([from, to], { clearProps: 'zIndex' }); busy = false; } })
-        .fromTo(to, { clipPath: RM ? 'inset(0% 0% 0% 0%)' : (dir > 0 ? 'inset(0% 0% 0% 100%)' : 'inset(0% 100% 0% 0%)') }, { clipPath: 'inset(0% 0% 0% 0%)', duration: RM ? .01 : 1.1, ease: 'expo.inOut' })
+        .fromTo(to, { clipPath: dir > 0 ? 'inset(0% 0% 0% 100%)' : 'inset(0% 100% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.1, ease: 'expo.inOut' })
         .fromTo(to.querySelector('img'), { scale: 1.08 }, { scale: 1, duration: 1.4, ease: 'expo.out' }, .15);
     });
   });
@@ -831,11 +820,11 @@ button{background:none;border:0;cursor:pointer}
     const pre = new Image(); pre.src = lbSrc(lbK);
     [1, -1].forEach(d => { new Image().src = lbSrc(lbK + d); });            // соседние подгружаем заранее
     gsap.killTweensOf(lbImg);
-    const out = dir ? gsap.to(lbImg, { autoAlpha: 0, x: -dir * 36, duration: RM ? .01 : .22, ease: 'power2.in' }) : null;
+    const out = dir ? gsap.to(lbImg, { autoAlpha: 0, x: -dir * 36, duration: .22, ease: 'power2.in' }) : null;
     Promise.all([(pre.decode ? pre.decode() : Promise.resolve()).catch(() => {}), out ? out.then() : null]).then(() => {
       if (tok !== lbTok) return;
       lbImg.src = pre.src; lbImg.alt = `${PROJECTS[lbP].t}, фото ${lbK + 1}`;
-      gsap.fromTo(lbImg, { autoAlpha: 0, x: dir * 36, scale: dir ? 1 : .97 }, { autoAlpha: 1, x: 0, scale: 1, duration: RM ? .01 : .7, ease: 'expo.out' });
+      gsap.fromTo(lbImg, { autoAlpha: 0, x: dir * 36, scale: dir ? 1 : .97 }, { autoAlpha: 1, x: 0, scale: 1, duration: .7, ease: 'expo.out' });
     });
   }
   function lbOpen(p, k, back) {
@@ -846,13 +835,13 @@ button{background:none;border:0;cursor:pointer}
     $$('.lb-nav').forEach(b => { b.hidden = !many; });
     lbImg.removeAttribute('src'); gsap.set(lbImg, { autoAlpha: 0 });
     lb.hidden = false; lenis.stop(); root.classList.add('is-locked');
-    gsap.fromTo(lb, { autoAlpha: 0 }, { autoAlpha: 1, duration: RM ? .01 : .35, ease: 'power2.out' });
+    gsap.fromTo(lb, { autoAlpha: 0 }, { autoAlpha: 1, duration: .35, ease: 'power2.out' });
     lbShow(k);
     $('#lbX').focus({ preventScroll: true });
   }
   function lbClose() {
     lbTok++;
-    gsap.to(lb, { autoAlpha: 0, duration: RM ? .01 : .3, ease: 'power2.in', onComplete() { lb.hidden = true; gsap.set(lb, { clearProps: 'opacity,visibility' }); } });
+    gsap.to(lb, { autoAlpha: 0, duration: .3, ease: 'power2.in', onComplete() { lb.hidden = true; gsap.set(lb, { clearProps: 'opacity,visibility' }); } });
     lenis.start(); root.classList.remove('is-locked');
     if (lbBack) lbBack.focus({ preventScroll: true });
   }
@@ -879,7 +868,7 @@ button{background:none;border:0;cursor:pointer}
     if (Math.abs(dx) > 45 && PROJECTS[lbP].imgs.length > 1) { swiped = true; lbShow(lbK + (dx < 0 ? 1 : -1), dx < 0 ? 1 : -1); setTimeout(() => { swiped = false; }, 350); }
   });
 
-  if (!RM) $$('.proj-row').forEach(row => gsap.fromTo(row.querySelectorAll('.pt'), { clipPath: 'inset(10% 6% 10% 6%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.4, ease: 'expo.out', stagger: .12, scrollTrigger: { trigger: row, start: 'top 80%' } }));
+  $$('.proj-row').forEach(row => gsap.fromTo(row.querySelectorAll('.pt'), { clipPath: 'inset(10% 6% 10% 6%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.4, ease: 'expo.out', stagger: .12, scrollTrigger: { trigger: row, start: 'top 80%' } }));
 
   document.fonts.ready.then(() => ScrollTrigger.refresh());
 })();
