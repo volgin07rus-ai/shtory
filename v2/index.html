@@ -181,22 +181,15 @@ button{background:none;border:0;cursor:pointer}
 .dirs{padding:clamp(64px,6vw,96px) var(--pad) clamp(72px,7vw,110px)}
 .dirs-head{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr) auto;gap:clamp(24px,4vw,64px);align-items:end}
 .dirs-head .lead{max-width:24rem;font-size:15px;color:var(--muted)}
-.dirs-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:clamp(10px,1vw,16px);margin-top:clamp(32px,3vw,48px)}
-/* у всех карточек общие строки: фото, заголовок, описание и стрелка стоят на одном уровне, даже если текст разной длины */
-.dir,.dir>a{display:grid;grid-row:span 4;grid-template-rows:subgrid;row-gap:0}
-.dir .arr{justify-self:start;align-self:start}
-@supports not (grid-template-rows:subgrid){
-  .dir>a{display:flex;flex-direction:column;height:100%}
-  .dir h3{min-height:2.6em}
-  .dir .arr{margin-top:auto;padding-top:16px}
-}
+.dirs-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:clamp(10px,1vw,16px);margin-top:clamp(32px,3vw,48px)}
+/* у всех карточек общие строки: фото, заголовок и описание стоят на одном уровне, даже если текст разной длины */
+.dir,.dir>a{display:grid;grid-row:span 3;grid-template-rows:subgrid;row-gap:0}
+@supports not (grid-template-rows:subgrid){.dir h3{min-height:2.6em}}
 .dir .pic{aspect-ratio:1.04;border-radius:4px}
 .dir .pic img{transition:transform 1.2s var(--ease)}
 .hoverable .dir:hover .pic img{transform:scale(1.05)}
 .dir h3{margin-top:22px;font:500 17.5px/1.3 var(--sans);color:var(--ink)}
 .dir p{margin-top:12px;max-width:18rem;font:400 14.5px/1.5 var(--sans);color:var(--muted)}
-.dir .arr{display:inline-block;margin-top:16px;color:var(--wine);transition:transform .5s var(--ease)}
-.hoverable .dir:hover .arr{transform:translateX(6px)}
 
 /* ---------- Проекты ---------- */
 .proj{display:flex;flex-direction:column;gap:4px;background:var(--bg)}
@@ -257,6 +250,7 @@ button{background:none;border:0;cursor:pointer}
 
 /* ---------- Форма ---------- */
 .rq{display:grid;grid-template-columns:31% minmax(0,1fr) 22%;min-height:clamp(520px,40vw,660px)}
+.rq-side img{position:absolute;left:0;bottom:0;height:116%;object-position:50% 100%}   /* фото выше рамки и прижато к низу: верх штор со сборкой не попадает в кадр (transform занят анимацией появления) */
 .rq-panel{padding:clamp(40px,3.6vw,60px) clamp(28px,3.4vw,58px)}
 .rq .h2{font-size:clamp(28px,2.4vw,42px)}
 .rq .lead{margin-top:14px;max-width:28rem}
@@ -440,7 +434,6 @@ button{background:none;border:0;cursor:pointer}
       <h2 class="h2" id="aboutT" data-r>Мы за интерьеры,<br>в которых есть<br>что рассказывать</h2>
       <p class="lead" data-r>Более 5 лет создаём текстильные решения и мягкую мебель, которые становятся частью архитектуры интерьера</p>
       <p class="lead" data-r>Нас вдохновляют цвет, фактура и детали. Мы подбираем ткани со всего мира, работаем с частными клиентами, дизайнерами и архитекторами и бережно сопровождаем проект от идеи до воплощения</p>
-      <a class="link" href="#services" data-r>Узнать больше о студии <i aria-hidden="true">→</i></a>
     </div>
     <div class="about-col">
       <div class="pic" data-clip><img src="../img/dirs/decor-2-s.jpg" alt="Подушки с леопардовым и графичным рисунком, отделка бахромой" loading="lazy"></div>
@@ -503,7 +496,7 @@ button{background:none;border:0;cursor:pointer}
     <div class="rq-panel">
       <p class="eyebrow" data-r>Начать диалог</p>
       <h2 class="h2" id="rqT" data-r>Интересные интерьеры<br>начинаются с интересных идей</h2>
-      <p class="lead" data-r>Расскажите о вашем проекте. Мы поможем найти для этого правильное текстильное решение</p>
+      <p class="lead" data-r>Расскажите о вашем проекте. Мы поможем найти для него правильное текстильное решение</p>
       <!-- Прототип: заявка никуда не уходит -->
       <form id="rqForm" novalidate data-r>
         <div class="seg" role="radiogroup" aria-label="Кто вы">
@@ -569,31 +562,30 @@ button{background:none;border:0;cursor:pointer}
   // Направления: первое фото из каждой её папки; в «портьерах» пока пусто, там её АФИпарк
   const DIRS = [
     ['Портьеры<br>и шторы', 'Ткани, которые задают ритм пространству', 'afimall/02'],
-    ['Римские шторы', 'Мягкая геометрия и выразительная фактура', 'dirs/roman-1', '50% 30%'],
+    ['Римские шторы', 'Мягкая геометрия и выразительная фактура', 'dirs/roman-1', '50% 66%'],
     ['Жалюзи<br>и рулонные шторы', 'Свет как часть интерьерной композиции', 'dirs/blinds-1'],
     ['Декоративный<br>текстиль', 'Цвет, рисунок и детали, которые связывают интерьер воедино', 'dirs/decor-1'],
     ['Мягкая мебель<br>на заказ', 'Индивидуальные модели по вашим эскизам и задачам проекта', 'dirs/furniture-1'],
-    ['Классический<br>стиль', 'Ламбрекены, кисти и бахрома для торжественных интерьеров', 'classic/03', '50% 35%'],
   ];
-  // Проекты: её состав и нумерация фото (первое идёт обложкой). По три в ряд мозаики, первый в ряду крупный,
+  // Проекты: её состав, порядок (14.10) и нумерация фото (первое идёт обложкой). По три в ряд мозаики, первый в ряду крупный,
   // в последнем ряду два проекта пополам
   const PROJECTS = [
-    { t: 'Дом в Абрамцево', r: 'Загородный дом', imgs: ['abramtsevo/01', 'abramtsevo/06', 'abramtsevo/03', 'abramtsevo/02', 'abramtsevo/08', 'abramtsevo/07', 'abramtsevo/05'] },
+    { t: 'Ресторан', r: 'Проект в работе', imgs: ['restaurant/01', 'restaurant/02'] },
     { t: 'Классический стиль', r: 'Избранные работы', imgs: ['classic/01', 'classic/02', 'classic/03', 'classic/04', 'classic/05'] },
-    { t: 'Дом в Юсупово', r: 'Загородный дом', imgs: ['yusupovo/03', 'yusupovo/01', 'yusupovo/05', 'yusupovo/04', 'yusupovo/02'] },
+    { t: 'Дом в Абрамцево', r: 'Загородный дом', imgs: ['abramtsevo/01', 'abramtsevo/06', 'abramtsevo/03', 'abramtsevo/02', 'abramtsevo/08', 'abramtsevo/07', 'abramtsevo/05'] },
     { t: 'Искусство и античность', r: 'Квартира 120 м² · Москва', imgs: ['antique/02', 'antique/03', 'antique/01', 'antique/04'],
       pub: ['Marie Claire Maison', 'https://mcmaison.ru/interior-flats/antikvariat-i-yarkie-akcenty-kvartira-120-m-v-moskve/'] },
     { t: 'ЖК «Событие»', r: 'Квартира · Москва', imgs: ['sobytie/01', 'sobytie/04', 'sobytie/02', 'sobytie/07', 'sobytie/03', 'sobytie/05', 'sobytie/06'] },
     { t: 'ЖК «АФИпарк»', r: 'Квартира · Москва', imgs: ['afimall/04', 'afimall/02', 'afimall/01', 'afimall/03'] },
     { t: 'Кровати', r: 'Текстиль для спальни', imgs: ['sobytie/04', 'slava/02', 'sobytie/07', 'afimall/04', 'sobytie/05', 'afimall/01'] },
-    { t: 'Ресторан', r: 'Проект в работе', imgs: ['restaurant/01', 'restaurant/02'] },
+    { t: 'Дом в Юсупово', r: 'Загородный дом', imgs: ['yusupovo/03', 'yusupovo/01', 'yusupovo/05', 'yusupovo/04', 'yusupovo/02'] },
   ];
 
   $('#dirs').innerHTML = DIRS.map(d => `
     <li class="dir" data-r>
-      <a href="#request">
+      <a href="#request" data-dir="${d[0].replace('<br>', ' ')}">
         <div class="pic" data-clip><img src="${U(d[2], 600)}" alt="" loading="lazy"${d[3] ? ` style="object-position:${d[3]}"` : ''}></div>
-        <h3>${d[0]}</h3><p>${d[1]}</p><span class="arr" aria-hidden="true">→</span>
+        <h3>${d[0]}</h3><p>${d[1]}</p>
       </a>
     </li>`).join('');
   const tile = (p, i) => `
@@ -637,6 +629,13 @@ button{background:none;border:0;cursor:pointer}
     if (window.ScrollTrigger) ScrollTrigger.refresh();
   });
   $('#dsGo').addEventListener('click', () => { $('#whoD').checked = true; });
+  // Карточка направления ведёт к форме и пишет в комментарий, что интересует (если человек ещё ничего не написал сам)
+  let dirNote = '';
+  $('#dirs').addEventListener('click', e => {
+    const a = e.target.closest('[data-dir]'); if (!a) return;
+    const msg = form.elements.msg;
+    if (!msg.value.trim() || msg.value === dirNote) msg.value = dirNote = 'Интересует: ' + a.dataset.dir.toLowerCase();
+  });
 
   const ld = $('#ld');
   if (!window.gsap || !window.ScrollTrigger || !window.Lenis) { root.classList.remove('js', 'is-loading'); ld.remove(); return; }
