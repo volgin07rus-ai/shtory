@@ -51,7 +51,7 @@ s = rep(s, '<meta name="description" content="Портьеры, римские �
 org = {'@context': 'https://schema.org', '@type': 'HomeGoodsStore', 'name': 'Шторме', 'description': DESC, 'url': SITE + '/',
        'image': SITE + '/img/brand-og.jpg', 'logo': SITE + '/img/logo.svg', 'telephone': ['+7 933 922-08-00', '+7 912 322-08-00'],
        'email': 'shtor.me@yandex.ru',
-       'address': {'@type': 'PostalAddress', 'streetAddress': 'Хорошёвское шоссе, 72', 'addressLocality': 'Москва', 'postalCode': '123007', 'addressCountry': 'RU'},
+       'address': {'@type': 'PostalAddress', 'addressLocality': 'Москва', 'addressCountry': 'RU'},
        'sameAs': ['https://www.instagram.com/shtor.me/', 'https://t.me/shtormeru']}
 s = rep(s, '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.3.23/dist/lenis.css">\n', '<link rel="stylesheet" href="vendor/lenis.css">\n')
 for a, b in (('https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js', 'vendor/gsap.min.js'),
