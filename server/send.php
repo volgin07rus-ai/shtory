@@ -81,7 +81,8 @@ if (!empty($cfg['mail_to'])) {
     if (!$mailed) $log('mail failed');
 }
 
-// 3. Telegram. Режим full: заявка целиком; signal: только сигнал без контактов (если Роскомнадзор возразит против передачи)
+// 3. Telegram. Режим signal (по умолчанию): только сигнал без имени, телефона и комментария, трансграничной передачи нет.
+//    Режим full: заявка целиком (тогда нужно уведомление в РКН о трансграничной передаче)
 $post = function (string $url, array $fields): ?array {
     $body = http_build_query($fields);
     if (function_exists('curl_init')) {
@@ -98,8 +99,14 @@ $post = function (string $url, array $fields): ?array {
     return is_array($j) ? $j : null;
 };
 $h = function (string $s): string { return htmlspecialchars($s, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); };
-if (($cfg['telegram_mode'] ?? 'full') === 'signal') {
-    $text = "<b>Новая заявка с сайта</b>\n<i>Кто пишет:</i>  $who\n\nКонтакты и комментарий в почте " . $h((string)$cfg['mail_to']);
+if (($cfg['telegram_mode'] ?? 'signal') !== 'full') {
+    // направление берём, только если комментарий начинается с подстановки из карточки, и только из известного списка
+    $dirs = ['портьеры и шторы', 'римские шторы', 'жалюзи и рулонные шторы', 'декоративный текстиль', 'мягкая мебель на заказ'];
+    $dir = preg_match('/^Интересует: (' . implode('|', array_map('preg_quote', $dirs)) . ')/u', $msg, $m) ? $m[1] : '';
+    $text = "<b>Новая заявка с сайта</b>\n\n<i>Кто пишет:</i>  $who" . ($dir !== '' ? "\n<i>Интересует:</i>  $dir" : '')
+        . ($mailed ? "\n\nИмя, телефон и комментарий в почте " . $h((string)$cfg['mail_to'])
+                   : "\n\nПисьмо на почту не отправилось. Заявка сохранена на сервере, сообщите разработчику")
+        . "\n\n<i>$when · shtorme.ru</i>";
 } else {
     $text = "<b>Новая заявка с сайта</b>\n\n<i>Имя:</i>  " . $h($name) . "\n<i>Связь:</i>  " . $h($contact)
         . "\n<i>Кто пишет:</i>  $who" . ($msg !== '' ? "\n<i>Комментарий:</i>  " . $h($msg) : '')

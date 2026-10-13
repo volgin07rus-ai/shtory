@@ -4,7 +4,7 @@
 return [
     'tg_token' => '123456:ABC...',            // токен бота @shtorme_zayavki_bot
     'tg_chat' => '-5566105368',                // группа для заявок
-    'telegram_mode' => 'full',                 // full: заявка целиком; signal: только сигнал без контактов
+    'telegram_mode' => 'signal',               // signal: только сигнал без данных (решено 14.10); full: заявка целиком, нужен РКН о трансграничной передаче
     'mail_to' => 'shtor.me@yandex.ru',
     'mail_from' => 'noreply@shtorme.ru',
     'salt' => 'случайная строка',              // для хеша IP в защите от частых отправок

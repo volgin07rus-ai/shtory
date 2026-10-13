@@ -67,8 +67,9 @@ for name in ('privacy.html', 'consent.html'):
     pages[name] = common((SRC / 'v2' / name).read_text(encoding='utf-8'), name)
 
 # ---------- Папка сайта ----------
-if OUT.exists(): shutil.rmtree(OUT)
-OUT.mkdir(parents=True)
+OUT.mkdir(parents=True, exist_ok=True)
+for old in OUT.iterdir():                       # чистим содержимое, а не саму папку: её может держать локальный сервер
+    shutil.rmtree(old) if old.is_dir() else old.unlink()
 for name, text in pages.items():
     assert 'jsdelivr' not in text and '../' not in text, name
     (OUT / name).write_text(text, encoding='utf-8')
