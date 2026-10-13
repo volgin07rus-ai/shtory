@@ -688,7 +688,11 @@ button{background:none;border:0;cursor:pointer}
   const coverScale = () => Math.max(1, (2 * innerHeight - card.offsetHeight) / card.offsetHeight) * 1.01;
   gsap.set(logoEl, { xPercent: -50, yPercent: -50, x: 0, y: 0 });
   gsap.set(card, { scale: RM ? 1 : coverScale(), borderRadius: 0, autoAlpha: 0, backgroundColor: '#1D1210' });   // тёмный под цвет загрузчика
-  gsap.set('.hero-img', { filter: 'blur(26px)' });
+  // Пока фото размыто, оно увеличено: полупрозрачная кромка размытия уходит за край карточки и не светлеет по бокам.
+  // Потом фото оседает, и резкость возвращается вместе с масштабом, так что кромка не успевает показаться.
+  const ZOOM = 1.3, BLUR = 20;                                  // 20px при увеличении 1.3 на экране ≈ 26px
+  const unblur = () => gsap.set('.hero-img', { filter: `blur(${(BLUR * (gsap.getProperty('.hero-img', 'scale') - 1) / (ZOOM - 1)).toFixed(2)}px)` });
+  gsap.set('.hero-img', { scale: ZOOM, filter: `blur(${BLUR}px)` });
   gsap.set('.hero-logo .lt', { y: 360 });                       // буквы прячутся под маской lgClip
   gsap.set('.lg-sub', { autoAlpha: 0 });
   gsap.set('.lg-ln-l', { scaleX: 0, transformOrigin: '100% 50%' });
@@ -737,24 +741,23 @@ button{background:none;border:0;cursor:pointer}
       root.classList.remove('is-locked', 'hd-in'); ld.remove(); blurEl.remove(); logoEl.remove();
       gsap.set(hd, { clearProps: 'zIndex' });
       gsap.set(card, { clearProps: 'transform,borderRadius,backgroundColor' });
-      gsap.set('.hero-img', { clearProps: 'filter' });
+      gsap.set('.hero-img', { clearProps: 'filter,transform' });
       lenis.start(); ScrollTrigger.refresh();
     }});
     if (RM) {
-      tl.add(() => root.classList.remove('is-loading')).set([blurEl, logoEl], { autoAlpha: 0 }).set(['.hero-veil', hdLogo], { autoAlpha: 1 }).set(card, { backgroundColor: '#EFEBE4' }).set('.hero-img', { filter: 'none' }).to(ld, { autoAlpha: 0, duration: .3 });
+      tl.add(() => root.classList.remove('is-loading')).set([blurEl, logoEl], { autoAlpha: 0 }).set(['.hero-veil', hdLogo], { autoAlpha: 1 }).set(card, { backgroundColor: '#EFEBE4' }).set('.hero-img', { scale: 1, filter: 'none' }).to(ld, { autoAlpha: 0, duration: .3 });
       intro(tl, 0); return;
     }
     tl.to('.ld-pct', { autoAlpha: 0, duration: .4 }, 0)
       .to(card, { scale: .74, borderRadius: 44, duration: 1.15, ease: 'expo.inOut' }, 0)
       .to(card, { scale: 1, borderRadius: 0, duration: 1.35, ease: 'expo.inOut' }, 1.35)
-      .fromTo('.hero-img', { scale: 1.12 }, { scale: 1, duration: 3, ease: 'expo.out' }, 1.35)
+      .to('.hero-img', { scale: 1, duration: 3, ease: 'expo.out', onUpdate: unblur }, 1.35)   // без скачка: фото уже увеличено с начала загрузки
       .to(ld, { autoAlpha: 0, duration: .7, ease: 'none' }, 1.45)
       .to(card, { backgroundColor: '#EFEBE4', duration: .7, ease: 'none' }, 1.45)   // край светлеет вместе с фоном вокруг
       .add(fly, 1.35)
       .add(() => root.classList.add('hd-in'), 2)                    // полоса шапки проявляется (.7 с) и готова к приземлению логотипа
       .add(() => root.classList.remove('is-loading'), 2.7)           // первый экран опускается под шапку
       .to(blurEl, { autoAlpha: 0, duration: 1.1, ease: 'power2.out' }, 1.6)
-      .to('.hero-img', { filter: 'blur(0px)', duration: 1.1, ease: 'power2.out' }, 1.6)
       .to('.hero-veil', { autoAlpha: 1, duration: 1.1, ease: 'power2.out' }, 1.6);
     intro(tl, 2.2, 2.05);
   }
