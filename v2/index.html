@@ -294,6 +294,10 @@ button{background:none;border:0;cursor:pointer}
 .ft .logo .lg{width:150px}
 .ft-row{display:flex;flex-wrap:wrap;gap:12px clamp(18px,2.6vw,44px)}
 .ft-row+.ft-row{padding-left:clamp(20px,3vw,52px);border-left:1px solid rgba(241,231,221,.16)}
+.ft-col{flex-direction:column;align-items:flex-start;gap:6px}
+.ft-col small{margin-left:8px;font-size:12px;letter-spacing:.06em;color:rgba(241,231,221,.5)}
+.ft-col i{font-style:normal;margin:0 10px;color:rgba(241,231,221,.35)}
+.ft-row a,.ft-meta a{white-space:nowrap}
 .ft-meta{margin-left:auto;padding-left:clamp(20px,2.4vw,40px);border-left:1px solid rgba(241,231,221,.16);display:flex;flex-direction:column;gap:4px;font-size:13px;color:rgba(241,231,221,.45)}
 .hoverable .ft a:hover{color:#F4EEE6;text-decoration:underline;text-underline-offset:.2em}
 
@@ -540,8 +544,8 @@ button{background:none;border:0;cursor:pointer}
 
 <footer class="ft" id="contacts">
   <a class="logo" href="#top" aria-label="Шторме, наверх"><svg class="lg" viewBox="150 186 1646 452" aria-hidden="true"><use href="#lgAll"/></svg></a>
-  <div class="ft-row"><span>Москва</span><a href="tel:+79991234567">+7 (999) 123-45-67</a><a href="mailto:hello@shtorme.ru">hello@shtorme.ru</a></div>
-  <div class="ft-row"><a href="#contacts">Telegram</a><a href="#contacts">WhatsApp</a><a href="https://www.instagram.com/shtor.me/" target="_blank" rel="noopener">Instagram</a></div>
+  <div class="ft-row ft-col"><span>Москва, Хорошёвское шоссе, 72 <small>по записи</small></span><span><a href="tel:+79339220800">+7 933 922-08-00</a><i aria-hidden="true">·</i><a href="tel:+79123220800">+7 912 322-08-00</a></span><a href="mailto:shtor.me@yandex.ru">shtor.me@yandex.ru</a></div>
+  <div class="ft-row"><a href="https://t.me/shtormeru" target="_blank" rel="noopener">Telegram</a><a href="https://wa.me/message/ALX7YVLQP5BKK1" target="_blank" rel="noopener">WhatsApp</a><a href="https://www.instagram.com/shtor.me/" target="_blank" rel="noopener">Instagram</a></div>
   <div class="ft-meta"><a href="privacy.html">Политика конфиденциальности</a><a href="https://volgin.site" target="_blank" rel="noopener">Разработка: volgin.site</a></div>
 </footer>
 
