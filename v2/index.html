@@ -241,11 +241,13 @@ button{background:none;border:0;cursor:pointer}
 .ds .h2{color:#F4EEE6;font-size:clamp(32px,2.9vw,50px)}
 .ds .lead{margin-top:20px;max-width:32rem;color:rgba(241,231,221,.82)}
 .ds .btn{margin-top:clamp(28px,3vw,44px);--c:var(--wine-2)}
-.ds-list{position:relative;display:flex;flex-direction:column;justify-content:center;padding:40px var(--pad) 40px clamp(36px,3.4vw,60px);background:var(--plum-2)}
-.ds-list ul{display:flex;flex-direction:column;gap:clamp(22px,2.2vw,34px)}
-.ds-line{position:absolute;left:clamp(20px,2vw,34px);top:15%;bottom:15%;width:1px;background:rgba(241,231,221,.25);transform-origin:top}
+/* пункты в строках одинаковой высоты: точки идут с равным шагом, даже если пункт переносится на две строки; линия от первой точки до последней */
+.ds-list{--pl:clamp(36px,3.4vw,60px);--ll:clamp(20px,2vw,34px);--g:clamp(22px,2.2vw,34px);display:flex;flex-direction:column;justify-content:center;padding:40px var(--pad) 40px var(--pl);background:var(--plum-2)}
+.ds-items{position:relative}
+.ds-list ul{display:grid;grid-auto-rows:1fr;align-items:center;gap:var(--g)}
+.ds-line{position:absolute;left:calc(var(--ll) - var(--pl));top:calc((100% - 3 * var(--g)) / 8);bottom:calc((100% - 3 * var(--g)) / 8);width:1px;background:rgba(241,231,221,.25);transform-origin:top}   /* центр первой и последней строки при 4 пунктах */
 .ds-list li{position:relative;font:500 12.5px/1.6 var(--sans);letter-spacing:.1em;text-transform:uppercase;color:rgba(241,231,221,.86)}
-.ds-list li::before{content:'';position:absolute;left:calc(-1 * clamp(36px,3.4vw,60px) + clamp(20px,2vw,34px) - 2.5px);top:.55em;width:6px;height:6px;border-radius:50%;background:#C9A27E}
+.ds-list li::before{content:'';position:absolute;left:calc(var(--ll) - var(--pl) - 2.5px);top:50%;margin-top:-3px;width:6px;height:6px;border-radius:50%;background:#C9A27E}
 
 /* ---------- Форма ---------- */
 .rq{display:grid;grid-template-columns:31% minmax(0,1fr) 22%;min-height:clamp(520px,40vw,660px)}
@@ -482,13 +484,15 @@ button{background:none;border:0;cursor:pointer}
     </div>
     <div class="pic ds-pic" data-clip><img src="../img/frames/designers.jpg" alt="Подборка образцов тканей, тесьмы и кистей" loading="lazy"></div>
     <div class="ds-list">
-      <span class="ds-line" aria-hidden="true"></span>
-      <ul>
-      <li>Подбор материалов под концепцию</li>
-      <li>Техническая проработка</li>
-      <li>Индивидуальный пошив и изготовление мягкой мебели</li>
-      <li>Сопровождение проекта</li>
-      </ul>
+      <div class="ds-items">
+        <span class="ds-line" aria-hidden="true"></span>
+        <ul>
+        <li>Подбор материалов под концепцию</li>
+        <li>Техническая проработка</li>
+        <li>Индивидуальный пошив и изготовление мягкой мебели</li>
+        <li>Сопровождение проекта</li>
+        </ul>
+      </div>
     </div>
   </section>
 
