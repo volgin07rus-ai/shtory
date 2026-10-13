@@ -1,22 +1,23 @@
-// Общий ползунок прокрутки для обоих макетов: тонкий бордовый вместо браузерного.
-// Тянется мышью, клик по дорожке прокручивает к месту, дружит с Lenis (window.__lenis).
+// Общий ползунок прокрутки вместо браузерного: тонкая направляющая и бордовая «бусина» на ней.
+// Тянется мышью, клик по дорожке прокручивает к месту, дружит с Lenis (window.__lenis). На телефоне его нет.
 (() => {
   const root = document.documentElement;
   const style = document.createElement('style');
   style.textContent = `
 html{scrollbar-width:none}
 html::-webkit-scrollbar{display:none}
-.sb{position:fixed;top:10px;bottom:10px;right:3px;z-index:450;width:14px;display:flex;justify-content:center;opacity:0;pointer-events:none;transition:opacity .6s cubic-bezier(.16,1,.3,1)}
+.sb{position:fixed;top:8px;bottom:8px;right:3px;z-index:450;width:18px;display:flex;justify-content:center;opacity:0;pointer-events:none;transition:opacity .6s cubic-bezier(.16,1,.3,1)}
 .sb.is-on{opacity:1;pointer-events:auto}
-.sb::before{content:'';position:absolute;top:0;bottom:0;width:3px;border-radius:3px;background:rgba(106,18,34,.13);transition:width .4s cubic-bezier(.16,1,.3,1)}
-.sb-th{position:absolute;top:0;width:3px;min-height:36px;border-radius:3px;background:#6A1222;box-shadow:0 0 0 1px rgba(236,230,221,.6);opacity:.5;cursor:grab;will-change:transform;transition:width .4s cubic-bezier(.16,1,.3,1),opacity .5s}
+.sb::before{content:'';position:absolute;top:0;bottom:0;width:1px;background:rgba(107,45,51,.16);transition:background-color .4s}
+.sb-th{position:absolute;top:0;width:6px;min-height:44px;border-radius:6px;background:#6B2D33;box-shadow:0 0 0 1px rgba(239,235,228,.55);opacity:.62;cursor:grab;will-change:transform;transition:width .35s cubic-bezier(.16,1,.3,1),opacity .4s}
 .sb.is-active .sb-th,.sb:hover .sb-th,.sb.is-drag .sb-th{opacity:1}
-.sb:hover::before,.sb.is-drag::before{width:5px}
-.sb:hover .sb-th,.sb.is-drag .sb-th{width:6px}
+.sb:hover::before,.sb.is-drag::before{background:rgba(107,45,51,.3)}
+.sb:hover .sb-th,.sb.is-drag .sb-th{width:9px}
 .sb-drag,.sb-drag *{user-select:none !important;cursor:grabbing !important}
-@media (hover:none),(pointer:coarse){.sb{right:2px}.sb.is-on{pointer-events:none}}
+@media (hover:none) and (pointer:coarse){.sb{display:none}}
 @media (prefers-reduced-motion:reduce){.sb,.sb *,.sb::before{transition:none !important}}`;
   document.head.appendChild(style);
+  if (matchMedia('(hover:none) and (pointer:coarse)').matches) return;   // телефон и планшет: листают пальцем, ползунок не нужен
 
   const sb = document.createElement('div');
   sb.className = 'sb';
