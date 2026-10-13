@@ -88,9 +88,10 @@ button{background:none;border:0;cursor:pointer}
 
 /* ---------- Первый экран ---------- */
 .hero{position:relative;isolation:isolate;min-height:max(680px,100svh);max-height:1000px;display:flex;flex-direction:column;justify-content:flex-end;padding:124px var(--pad) clamp(36px,5vh,60px);overflow:hidden;color:var(--ink)}
-.hero-card{position:absolute;inset:0;z-index:-1;overflow:hidden;background:#2B201D}
-.hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 55%}
-.hero-veil{position:absolute;inset:0;background:radial-gradient(75% 42% at 0% 100%,rgba(239,235,228,.88) 0%,rgba(239,235,228,.6) 45%,rgba(239,235,228,0) 100%),linear-gradient(90deg,rgba(239,235,228,.97) 0%,rgba(239,235,228,.9) 26%,rgba(239,235,228,.55) 44%,rgba(239,235,228,0) 62%)}
+.hero-card{position:absolute;inset:0;z-index:-1;overflow:hidden;background:#4A1B22}   /* бордо под левой частью, пока идёт загрузчик */
+.hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 50%}
+@media (min-width:761px){.hero-img{left:auto;width:58%}}   /* фото вертикальное: на компьютере занимает правую часть */
+.hero-veil{position:absolute;inset:0;background:radial-gradient(75% 42% at 0% 100%,rgba(239,235,228,.88) 0%,rgba(239,235,228,.6) 45%,rgba(239,235,228,0) 100%),linear-gradient(90deg,#EFEBE4 0%,#EFEBE4 42%,rgba(239,235,228,.78) 46%,rgba(239,235,228,0) 57%)}
 .hero-in{max-width:660px;margin-block:auto}   /* по центру свободного места, а не у пола */
 .hero .eyebrow{color:var(--muted);letter-spacing:.14em}
 .h1{margin-top:18px;font:400 clamp(48px,6vw,100px)/1.02 var(--serif);font-stretch:90%;letter-spacing:-.01em;color:var(--ink)}
@@ -130,7 +131,7 @@ button{background:none;border:0;cursor:pointer}
 .dirs{padding:clamp(64px,6vw,96px) var(--pad) clamp(72px,7vw,110px)}
 .dirs-head{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr) auto;gap:clamp(24px,4vw,64px);align-items:end}
 .dirs-head .lead{max-width:24rem;font-size:15px;color:var(--muted)}
-.dirs-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:clamp(10px,1vw,16px);margin-top:clamp(32px,3vw,48px)}
+.dirs-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:clamp(10px,1vw,16px);margin-top:clamp(32px,3vw,48px)}
 .dir .pic{aspect-ratio:1.04;border-radius:4px}
 .dir .pic img{transition:transform 1.2s var(--ease)}
 .hoverable .dir:hover .pic img{transform:scale(1.05)}
@@ -147,6 +148,8 @@ button{background:none;border:0;cursor:pointer}
 .proj-row.rev .pt:not(.pt-a){grid-column:1}
 .pt{position:relative;overflow:hidden;background:#2B201D;color:#F4EEE6}
 .pt-a{grid-row:1/3}
+.proj-row.two{grid-template-columns:1fr 1fr;grid-template-rows:1fr;height:clamp(440px,38vw,680px)}
+.proj-row.two .pt-a,.proj-row.two .pt{grid-row:auto;grid-column:auto}
 .pt-s{position:absolute;inset:0}
 .pt-s img{width:100%;height:100%;object-fit:cover;object-position:50% 45%}
 .pt::after{content:'';position:absolute;inset:auto 0 0;height:45%;background:linear-gradient(to top,rgba(20,12,10,.62),rgba(20,12,10,0));pointer-events:none}
@@ -172,7 +175,7 @@ button{background:none;border:0;cursor:pointer}
 .st h3{margin-top:18px;font:400 clamp(20px,1.6vw,25px)/1.22 var(--serif);font-stretch:90%;color:var(--ink)}
 .st p{margin-top:14px;max-width:17rem;font:400 14.5px/1.55 var(--sans);color:var(--muted)}
 .steps-decor{position:absolute;top:0;right:0;bottom:0;width:13vw;max-width:220px}
-.steps-decor img{width:100%;height:100%;object-fit:cover;object-position:70% 30%}
+.steps-decor img{width:100%;height:100%;object-fit:cover;object-position:50% 40%}
 .steps-decor::before{content:'';position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,var(--bg),rgba(239,235,228,0) 40%)}
 
 /* ---------- Дизайнерам ---------- */
@@ -224,7 +227,7 @@ button{background:none;border:0;cursor:pointer}
 .rq-ok small{display:block;margin-top:8px;font-size:13px;color:var(--muted)}
 .rq-ok .link{margin-top:22px}
 .rq-quote{position:relative;color:#F4EEE6}
-.rq-quote::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(36,20,8,.8),rgba(36,20,8,.3) 55%,rgba(36,20,8,0) 80%)}
+.rq-quote::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(26,8,10,.72),rgba(26,8,10,.2) 60%,rgba(26,8,10,.05))}
 .rq-quote blockquote{position:absolute;z-index:1;left:clamp(20px,2.4vw,40px);right:clamp(16px,2vw,32px);bottom:clamp(36px,4vw,64px);padding:18px 0;border-top:1px solid rgba(244,238,230,.4);border-bottom:1px solid rgba(244,238,230,.4);font:300 clamp(28px,2.6vw,44px)/1.15 var(--serif);font-stretch:90%}
 
 /* ---------- Футер ---------- */
@@ -264,7 +267,11 @@ button{background:none;border:0;cursor:pointer}
   .logo .lg{width:120px}
   .hd-btn{padding:11px 14px;font-size:10.5px;letter-spacing:.1em}
   .hero{padding-top:120px}
-  .hero-veil{background:linear-gradient(180deg,rgba(239,235,228,.1) 0,rgba(239,235,228,.86) 120px,rgba(239,235,228,.93) 340px,rgba(239,235,228,.97) 100%)}
+  /* телефон: фото открыто сверху, текст ниже на бежевом */
+  .hero{padding-top:calc(46svh + 20px);max-height:none}
+  .hero-in{margin-block:0}
+  .hero-img{height:calc(46svh + 90px)}
+  .hero-veil{background:linear-gradient(180deg,rgba(239,235,228,0) 0,rgba(239,235,228,0) calc(46svh - 110px),rgba(239,235,228,.9) calc(46svh - 10px),#EFEBE4 calc(46svh + 60px))}
   .stats{display:grid;grid-template-columns:auto minmax(0,1fr);row-gap:16px;align-self:stretch}
   .stat{padding:0 0 0 20px}
   .stat:first-child{padding:0 20px 0 0}
@@ -278,7 +285,7 @@ button{background:none;border:0;cursor:pointer}
   .dirs-grid{grid-auto-flow:column;grid-template-columns:none;grid-auto-columns:72%;overflow-x:auto;scroll-snap-type:x mandatory;margin-right:calc(-1 * var(--pad));padding-right:var(--pad);scrollbar-width:none}
   .dirs-grid::-webkit-scrollbar{display:none}
   .dir{scroll-snap-align:start}
-  .proj-row,.proj-row.rev{grid-template-columns:1fr;grid-template-rows:none;height:auto}
+  .proj-row,.proj-row.rev,.proj-row.two{grid-template-columns:1fr;grid-template-rows:none;height:auto}
   .pt,.pt-a,.proj-row.rev .pt-a,.proj-row.rev .pt:not(.pt-a){grid-row:auto;grid-column:auto;aspect-ratio:.85}
   .steps-head{grid-template-columns:1fr}
   .steps-head .lead{margin-top:0}
@@ -334,7 +341,7 @@ button{background:none;border:0;cursor:pointer}
   <!-- Первый экран -->
   <section class="hero" aria-labelledby="h1">
     <div class="hero-card">
-      <img class="hero-img" src="https://images.unsplash.com/photo-1773923819983-c594d5d5142b?auto=format&amp;fit=crop&amp;w=2000&amp;q=78" alt="Гостиная с бархатными шторами и тюлем у большого окна, солнце на полу">
+      <img class="hero-img" src="../img/hero/01.jpg" alt="Портьера из ткани с цветочным узором, подхват с кистями и бахромой на фоне бордовой стены">
       <div class="hero-veil" aria-hidden="true"></div>
       <div class="hero-blur" aria-hidden="true"></div>
       <div class="hero-logo" aria-hidden="true">
@@ -362,7 +369,7 @@ button{background:none;border:0;cursor:pointer}
 
   <!-- О студии -->
   <section class="about" id="about" aria-labelledby="aboutT">
-    <div class="pic about-big" data-clip><img src="https://images.unsplash.com/photo-1737275857760-1c4b42f8bb8b?auto=format&amp;fit=crop&amp;w=1200&amp;q=75" alt="Рулоны тканей с золотым и бордовым узором" loading="lazy"></div>
+    <div class="pic about-big" data-clip><img src="../img/fabric/02.jpg" alt="Ткань с дамасским орнаментом" loading="lazy"></div>
     <div class="about-txt">
       <p class="eyebrow" data-r>О студии</p>
       <h2 class="h2" id="aboutT" data-r>Мы за интерьеры,<br>в которых есть<br>что рассказывать</h2>
@@ -371,7 +378,7 @@ button{background:none;border:0;cursor:pointer}
       <a class="link" href="#services" data-r>Узнать больше о студии <i aria-hidden="true">→</i></a>
     </div>
     <div class="about-col">
-      <div class="pic" data-clip><img src="../img/abramtsevo/05-s.jpg" alt="Портьеры с рисунком и тюль в бревенчатом доме" loading="lazy"></div>
+      <div class="pic" data-clip><img src="../img/dirs/decor-2-s.jpg" alt="Подушки с леопардовым и графичным рисунком, отделка бахромой" loading="lazy"></div>
       <div class="pic" data-clip><img src="../img/antique/02-s.jpg" alt="Гостиная с портьерами из ткани с рисунком" loading="lazy"></div>
       <div class="pic" data-clip><img src="../img/sobytie/02-s.jpg" alt="Портьеры и тюль крупным планом" loading="lazy"></div>
     </div>
@@ -402,7 +409,7 @@ button{background:none;border:0;cursor:pointer}
       <li class="st"><span class="st-n" aria-hidden="true"><span>03</span></span><h3>Продумать исполнение</h3><p>Учитываем конструкцию, посадку, особенности интерьера и будущий результат</p></li>
       <li class="st"><span class="st-n" aria-hidden="true"><span>04</span></span><h3>Воплотить задуманное</h3><p>Создаём текстильные изделия и мягкую мебель, в которых идея обретает форму</p></li>
     </ol>
-    <div class="steps-decor" aria-hidden="true"><img src="https://images.unsplash.com/photo-1628428988968-5549dd02dde2?auto=format&amp;fit=crop&amp;w=500&amp;q=75" alt="" loading="lazy"></div>
+    <div class="steps-decor" aria-hidden="true"><img src="../img/frames/steps-s.jpg" alt="" loading="lazy"></div>
   </section>
 
   <!-- Дизайнерам -->
@@ -413,7 +420,7 @@ button{background:none;border:0;cursor:pointer}
       <p class="lead" data-r>Мы говорим с дизайнерами на языке фактур, пропорций и деталей. Вникаем в концепцию, продумываем решения и помогаем сохранить авторский замысел в реализации</p>
       <a class="btn" href="#request" id="dsGo" data-r><span>Обсудить сотрудничество</span></a>
     </div>
-    <div class="pic ds-pic" data-clip><img src="https://images.unsplash.com/photo-1770970831074-6e88b6cc260b?auto=format&amp;fit=crop&amp;w=900&amp;q=75" alt="Образцы тканей и эскизы на столе дизайнера" loading="lazy"></div>
+    <div class="pic ds-pic" data-clip><img src="../img/frames/designers.jpg" alt="Подборка образцов тканей, тесьмы и кистей" loading="lazy"></div>
     <div class="ds-list">
       <span class="ds-line" aria-hidden="true"></span>
       <ul>
@@ -454,7 +461,7 @@ button{background:none;border:0;cursor:pointer}
         <button type="button" class="link" id="rqAgain">Новая заявка <i aria-hidden="true">→</i></button>
       </div>
     </div>
-    <div class="pic rq-quote" data-clip><img src="../img/fabric/01.jpg" alt="" loading="lazy" style="object-position:50% 40%"><blockquote>Не всё красивое должно быть тихим</blockquote></div>
+    <div class="pic rq-quote" data-clip><img src="https://images.unsplash.com/photo-1786282574955-cba959404d1a?auto=format&amp;fit=crop&amp;w=700&amp;q=75" alt="" loading="lazy"><blockquote>Не всё красивое должно быть тихим</blockquote></div>
   </section>
 </main>
 
@@ -478,23 +485,28 @@ button{background:none;border:0;cursor:pointer}
   const pad = n => String(n).padStart(2, '0');
   const ARR = d => `<svg viewBox="0 0 16 16" aria-hidden="true"><path d="${d < 0 ? 'M13.5 8h-11M6.5 4l-4 4 4 4' : 'M2.5 8h11M9.5 4l4 4-4 4'}" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>`;
 
-  // ---------- Данные: работы клиентки; для мебели пока стоковое фото ----------
+  // ---------- Данные: всё из её папки «сайт» на Google Диске (13.10) ----------
+  // Направления: первое фото из каждой её папки; в «портьерах» пока пусто, там её АФИпарк
   const DIRS = [
     ['Портьеры<br>и шторы', 'Ткани, которые задают ритм пространству', 'afimall/02'],
-    ['Римские шторы', 'Мягкая геометрия и выразительная фактура', 'abramtsevo/03', '50% 22%'],
-    ['Жалюзи<br>и солнцезащитные решения', 'Свет как часть интерьерной композиции', 'yusupovo/03'],
-    ['Декоративный<br>текстиль', 'Цвет, рисунок и детали, которые связывают интерьер воедино', 'sobytie/04'],
-    ['Мягкая мебель<br>на заказ', 'Индивидуальные модели по вашим эскизам и задачам проекта', '1770085196441-54cb1ed4c1fa'],
+    ['Римские шторы', 'Мягкая геометрия и выразительная фактура', 'dirs/roman-1', '50% 30%'],
+    ['Жалюзи<br>и рулонные шторы', 'Свет как часть интерьерной композиции', 'dirs/blinds-1'],
+    ['Декоративный<br>текстиль', 'Цвет, рисунок и детали, которые связывают интерьер воедино', 'dirs/decor-1'],
+    ['Мягкая мебель<br>на заказ', 'Индивидуальные модели по вашим эскизам и задачам проекта', 'dirs/furniture-1'],
+    ['Классический<br>стиль', 'Ламбрекены, кисти и бахрома для торжественных интерьеров', 'classic/03', '50% 35%'],
   ];
-  // По три проекта в ряд мозаики: первый в ряду крупный
+  // Проекты: её состав и нумерация фото (первое идёт обложкой). По три в ряд мозаики, первый в ряду крупный,
+  // в последнем ряду два проекта пополам
   const PROJECTS = [
-    { t: 'Дом в Абрамцево', r: 'Загородный дом', imgs: ['abramtsevo/02', 'abramtsevo/01', 'abramtsevo/03', 'abramtsevo/04', 'abramtsevo/05', 'abramtsevo/06', 'abramtsevo/07'] },
-    { t: 'ЖК «АФИМОЛЛ»', r: 'Квартира · Москва', imgs: ['afimall/02', 'afimall/03', 'afimall/04', 'afimall/01'] },
-    { t: 'Дом в Юсупово', r: 'Загородный дом', imgs: ['yusupovo/03', 'yusupovo/02', 'yusupovo/04', 'yusupovo/05', 'yusupovo/01', 'yusupovo/06'] },
-    { t: 'ЖК «Событие»', r: 'Квартира · Москва', imgs: ['sobytie/06', 'sobytie/02', 'sobytie/01', 'sobytie/03', 'sobytie/04', 'sobytie/05', 'sobytie/07'] },
-    { t: 'Искусство и античность', r: 'Квартира 120 м² · Москва', imgs: ['antique/02', 'antique/03', 'antique/04', 'antique/01'],
+    { t: 'Дом в Абрамцево', r: 'Загородный дом', imgs: ['abramtsevo/01', 'abramtsevo/06', 'abramtsevo/03', 'abramtsevo/02', 'abramtsevo/08', 'abramtsevo/07', 'abramtsevo/05'] },
+    { t: 'Классический стиль', r: 'Избранные работы', imgs: ['classic/01', 'classic/02', 'classic/03', 'classic/04', 'classic/05'] },
+    { t: 'Дом в Юсупово', r: 'Загородный дом', imgs: ['yusupovo/03', 'yusupovo/01', 'yusupovo/05', 'yusupovo/04', 'yusupovo/02'] },
+    { t: 'Искусство и античность', r: 'Квартира 120 м² · Москва', imgs: ['antique/02', 'antique/03', 'antique/01', 'antique/04'],
       pub: ['Marie Claire Maison', 'https://mcmaison.ru/interior-flats/antikvariat-i-yarkie-akcenty-kvartira-120-m-v-moskve/'] },
-    { t: 'ЖК «Слава»', r: 'Квартира · Москва', imgs: ['slava/01', 'slava/02'] },
+    { t: 'ЖК «Событие»', r: 'Квартира · Москва', imgs: ['sobytie/01', 'sobytie/04', 'sobytie/02', 'sobytie/07', 'sobytie/03', 'sobytie/05', 'sobytie/06'] },
+    { t: 'ЖК «АФИпарк»', r: 'Квартира · Москва', imgs: ['afimall/04', 'afimall/02', 'afimall/01', 'afimall/03'] },
+    { t: 'Кровати', r: 'Текстиль для спальни', imgs: ['sobytie/04', 'slava/02', 'sobytie/07', 'afimall/04', 'sobytie/05', 'afimall/01'] },
+    { t: 'Ресторан', r: 'Проект в работе', imgs: ['restaurant/01', 'restaurant/02'] },
   ];
 
   $('#dirs').innerHTML = DIRS.map(d => `
@@ -510,7 +522,9 @@ button{background:none;border:0;cursor:pointer}
       <div class="pt-cap"><b>${p.t}</b><span>${p.r}</span>${p.pub ? `<a class="pt-pub" href="${p.pub[1]}" target="_blank" rel="noopener">Публикация в ${p.pub[0]}&nbsp;↗</a>` : ''}</div>
       <div class="pt-ctl"><div class="pt-btns"><button type="button" data-d="-1" aria-label="Предыдущее фото проекта «${p.t}»">${ARR(-1)}</button><button type="button" data-d="1" aria-label="Следующее фото проекта «${p.t}»">${ARR(1)}</button></div><span class="pt-idx">01 / ${pad(p.imgs.length)}</span></div>
     </article>`;
-  $('#projects').innerHTML = [0, 3].map((k, r) => `<div class="proj-row${r ? ' rev' : ''}">${PROJECTS.slice(k, k + 3).map((p, j) => tile(p, k + j)).join('')}</div>`).join('');
+  const rows = []; for (let k = 0; k < PROJECTS.length; k += 3) rows.push(k);
+  $('#projects').innerHTML = rows.map((k, r) => { const row = PROJECTS.slice(k, k + 3);
+    return `<div class="proj-row${r % 2 ? ' rev' : ''}${row.length === 2 ? ' two' : ''}">${row.map((p, j) => tile(p, k + j)).join('')}</div>`; }).join('');
 
   if (matchMedia('(hover: hover) and (pointer: fine)').matches) document.body.classList.add('hoverable');
 
