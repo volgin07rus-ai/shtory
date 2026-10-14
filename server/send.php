@@ -16,9 +16,88 @@ function done(bool $ok, int $code = 200): void
     exit;
 }
 
-if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') done(false, 405);
+// Таблица для Excel: data/zayavki.xlsx, все заявки из requests-*.jsonl, новые сверху.
+// Пересобирается после каждой заявки; скачивается из менеджера файлов хостинга.
+function zayavki_xlsx(string $dataDir): bool
+{
+    if (!class_exists('ZipArchive')) return false;
+    $rows = [];
+    foreach (glob($dataDir . '/requests-*.jsonl') ?: [] as $f) {
+        foreach (file($f, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) ?: [] as $line) {
+            $r = json_decode($line, true);
+            if (is_array($r)) $rows[] = $r;
+        }
+    }
+    usort($rows, function ($a, $b) { return strcmp((string)($b['time'] ?? ''), (string)($a['time'] ?? '')); });
+
+    $x = function (string $s): string {
+        return htmlspecialchars(str_replace("\r\n", "\n", $s), ENT_XML1 | ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+    };
+    $cell = function (string $ref, string $v, int $style) use ($x): string {
+        return "<c r=\"$ref\" t=\"inlineStr\" s=\"$style\"><is><t xml:space=\"preserve\">" . $x($v) . '</t></is></c>';
+    };
+    $head = ['№', 'Дата', 'Время', 'Имя', 'Контакт', 'Кто пишет', 'Комментарий'];
+    $cols = range('A', 'G');
+    $sheet = '<row r="1">';
+    foreach ($head as $i => $h) $sheet .= $cell($cols[$i] . '1', $h, 2);
+    $sheet .= '</row>';
+    $n = count($rows);
+    foreach ($rows as $i => $r) {
+        $row = $i + 2;
+        try { $t = new DateTime((string)($r['time'] ?? '')); } catch (Exception $e) { $t = null; }
+        $vals = [$t ? $t->format('d.m.Y') : '', $t ? $t->format('H:i') : '', (string)($r['name'] ?? ''),
+            (string)($r['contact'] ?? ''), (string)($r['who'] ?? ''), (string)($r['msg'] ?? '')];
+        $sheet .= "<row r=\"$row\"><c r=\"A$row\" s=\"1\"><v>" . ($n - $i) . '</v></c>';   // номер по порядку прихода
+        foreach ($vals as $k => $v) $sheet .= $cell($cols[$k + 1] . $row, $v, 1);
+        $sheet .= '</row>';
+    }
+    $last = $n + 1;
+    $widths = [6, 12, 8, 20, 24, 16, 70];
+    $colsXml = '';
+    foreach ($widths as $i => $w) $colsXml .= '<col min="' . ($i + 1) . '" max="' . ($i + 1) . "\" width=\"$w\" customWidth=\"1\"/>";
+    $ns = 'xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"';
+    $nsR = 'xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"';
+    $files = [
+        '[Content_Types].xml' => '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">'
+            . '<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/>'
+            . '<Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/>'
+            . '<Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>'
+            . '<Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/></Types>',
+        '_rels/.rels' => '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'
+            . '<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>',
+        'xl/_rels/workbook.xml.rels' => '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'
+            . '<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/>'
+            . '<Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>',
+        'xl/workbook.xml' => "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><workbook $ns $nsR><sheets><sheet name=\"Заявки\" sheetId=\"1\" r:id=\"rId1\"/></sheets>"
+            . "<definedNames><definedName name=\"_xlnm._FilterDatabase\" localSheetId=\"0\" hidden=\"1\">'Заявки'!\$A\$1:\$G\$$last</definedName></definedNames></workbook>",
+        'xl/styles.xml' => "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><styleSheet $ns>"
+            . '<fonts count="2"><font><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="11"/><name val="Calibri"/></font></fonts>'
+            . '<fills count="3"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill>'
+            . '<fill><patternFill patternType="solid"><fgColor rgb="FFF1E7DD"/><bgColor indexed="64"/></patternFill></fill></fills>'
+            . '<borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders>'
+            . '<cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs>'
+            . '<cellXfs count="3"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/>'
+            . '<xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0" applyAlignment="1"><alignment horizontal="left" vertical="top" wrapText="1"/></xf>'
+            . '<xf numFmtId="0" fontId="1" fillId="2" borderId="0" xfId="0" applyFont="1" applyFill="1"/></cellXfs>'
+            . '<cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>',
+        'xl/worksheets/sheet1.xml' => "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><worksheet $ns $nsR>"
+            . '<sheetViews><sheetView workbookViewId="0"><pane ySplit="1" topLeftCell="A2" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews>'
+            . "<sheetFormatPr defaultRowHeight=\"15\"/><cols>$colsXml</cols><sheetData>$sheet</sheetData><autoFilter ref=\"A1:G$last\"/></worksheet>",
+    ];
+    $tmp = $dataDir . '/zayavki.tmp';
+    @unlink($tmp);
+    $zip = new ZipArchive();
+    if ($zip->open($tmp, ZipArchive::CREATE) !== true) return false;
+    foreach ($files as $name => $xml) $zip->addFromString($name, $xml);
+    if (!$zip->close()) return false;
+    return @rename($tmp, $dataDir . '/zayavki.xlsx');
+}
 
 $private = dirname(__DIR__, 2) . '/shtorme-private';
+if (PHP_SAPI === 'cli') exit(zayavki_xlsx($private . '/data') ? 0 : 1);   // пересобрать таблицу вручную: php send.php
+
+if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') done(false, 405);
+
 $cfg = @include $private . '/config.php';
 if (!is_array($cfg)) done(false, 500);
 
@@ -68,6 +147,7 @@ $record = ['time' => $at->format('c'), 'name' => $name, 'contact' => $contact, '
 $saved = @file_put_contents($dataDir . '/requests-' . $at->format('Y-m') . '.jsonl',
     json_encode($record, JSON_UNESCAPED_UNICODE) . "\n", FILE_APPEND | LOCK_EX) !== false;
 if (!$saved) $log('save failed');
+elseif (!zayavki_xlsx($dataDir)) $log('xlsx failed');
 
 // 2. Копия на почту
 $mailed = false;
