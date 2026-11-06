@@ -51,7 +51,7 @@ def common(s, path):
     s = rep(s, FONTS_GOOGLE, FONTS_LOCAL)
     s = s.replace('../img/', 'img/')
     assert 'googleapis' not in s and 'jsdelivr' not in s and 'unsplash' not in s, path
-    return rep(s, '</head>', METRIKA + '</head>')
+    return rep(s, '</head>', METRIKA + '<script src="cookie.js" defer></script>\n</head>')   # плашка про cookie
 
 # ---------- Главная ----------
 s = (SRC / 'v2/index.html').read_text(encoding='utf-8')
@@ -104,6 +104,7 @@ for rel in sorted(imgs):
 shutil.copytree(SRC / 'assets/fonts', OUT / 'fonts')
 shutil.copytree(SRC / 'assets/vendor', OUT / 'vendor')
 shutil.copy2(SRC / 'scrollbar.js', OUT / 'scrollbar.js')
+shutil.copy2(SRC / 'cookie.js', OUT / 'cookie.js')
 for f in ('send.php', '404.html'):
     shutil.copy2(SRC / 'server' / f, OUT / f)
 
