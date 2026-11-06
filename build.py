@@ -27,6 +27,21 @@ FONTS_GOOGLE = ('<link rel="preconnect" href="https://fonts.googleapis.com">\n'
 FONTS_LOCAL = ('<link rel="preload" href="fonts/inter-normal-cyrillic.woff2" as="font" type="font/woff2" crossorigin>\n'
                '<link rel="preload" href="fonts/noto-serif-display-normal-cyrillic.woff2" as="font" type="font/woff2" crossorigin>\n'
                '<link rel="stylesheet" href="fonts/fonts.css">\n')
+# Яндекс Метрика (счётчик заказчика, 06.11.2026): только на боевом сайте, макет на volgin.site без него
+METRIKA = '''<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function(m,e,t,r,i,k,a){
+        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();
+        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=114107685', 'ym');
+
+    ym(114107685, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/114107685" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+'''
 ICONS = ('<link rel="icon" href="img/brand-favicon.svg" type="image/svg+xml">\n'
          '<link rel="apple-touch-icon" href="img/brand-apple-touch.png">\n'
          '<meta name="theme-color" content="#EFEBE4">\n')
@@ -36,7 +51,7 @@ def common(s, path):
     s = rep(s, FONTS_GOOGLE, FONTS_LOCAL)
     s = s.replace('../img/', 'img/')
     assert 'googleapis' not in s and 'jsdelivr' not in s and 'unsplash' not in s, path
-    return s
+    return rep(s, '</head>', METRIKA + '</head>')
 
 # ---------- Главная ----------
 s = (SRC / 'v2/index.html').read_text(encoding='utf-8')
@@ -124,7 +139,8 @@ RewriteRule ^index\\.html$ / [R=301,L]
 <IfModule mod_headers.c>
   Header set X-Content-Type-Options "nosniff"
   Header set Referrer-Policy "strict-origin-when-cross-origin"
-  Header set X-Frame-Options "SAMEORIGIN"
+  # чужие сайты не могут встроить страницы во фрейм; исключение для Вебвизора Яндекс Метрики (вместо X-Frame-Options, который его ломал)
+  Header set Content-Security-Policy "frame-ancestors 'self' https://metrika.yandex.ru https://metrika.yandex.by https://metrica.yandex.com https://metrica.yandex.com.tr https://webvisor.com https://*.webvisor.com"
 </IfModule>
 
 <IfModule mod_expires.c>

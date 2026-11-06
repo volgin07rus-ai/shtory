@@ -511,10 +511,10 @@ button{background:none;border:0;cursor:pointer}
           <input type="radio" name="who" id="whoD" value="designer"><label for="whoD">Я дизайнер</label>
         </div>
         <div class="f2">
-          <label class="fld"><span class="sr">Ваше имя</span><input name="name" placeholder="Ваше имя" autocomplete="name" aria-describedby="err-name"><span class="err" id="err-name" hidden></span></label>
-          <label class="fld"><span class="sr">Телефон или Telegram</span><input name="contact" placeholder="Телефон или Telegram" autocomplete="tel" aria-describedby="err-contact"><span class="err" id="err-contact" hidden></span></label>
+          <label class="fld"><span class="sr">Ваше имя</span><input class="ym-disable-keys" name="name" placeholder="Ваше имя" autocomplete="name" aria-describedby="err-name"><span class="err" id="err-name" hidden></span></label>
+          <label class="fld"><span class="sr">Телефон или Telegram</span><input class="ym-disable-keys" name="contact" placeholder="Телефон или Telegram" autocomplete="tel" aria-describedby="err-contact"><span class="err" id="err-contact" hidden></span></label>
         </div>
-        <label class="fld fld-c"><span class="sr">Комментарий к проекту</span><textarea name="msg" rows="2" placeholder="Комментарий к проекту (необязательно)"></textarea></label>
+        <label class="fld fld-c"><span class="sr">Комментарий к проекту</span><textarea class="ym-disable-keys" name="msg" rows="2" placeholder="Комментарий к проекту (необязательно)"></textarea></label>
         <button class="btn" type="submit"><span>Отправить заявку</span></button>
         <label class="agree"><input type="checkbox" name="agree" aria-describedby="err-agree"><span>Даю <a href="consent.html" target="_blank">согласие на обработку персональных данных</a></span></label>
         <span class="err" id="err-agree" hidden></span>
@@ -641,6 +641,7 @@ button{background:none;border:0;cursor:pointer}
         sent = r.ok && (await r.json()).ok === true;
       } catch (_) { /* сеть или сервер: ниже покажем, как связаться иначе */ }
       sendBtn.disabled = false; label.textContent = text;
+      if (sent && window.ym) ym(114107685, 'reachGoal', 'zayavka');      // цель в Метрике: заявка дошла до сервера
       if (!sent) {
         status.innerHTML = 'Не получилось отправить заявку. Позвоните нам: <a href="tel:+79339220800">+7 933 922-08-00</a> или напишите в <a href="https://t.me/shtormeru" target="_blank" rel="noopener">Telegram</a>';
         status.hidden = false; return;
